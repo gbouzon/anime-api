@@ -4,13 +4,14 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 //var_dump($_SERVER["REQUEST_METHOD"]);
 use Slim\Factory\AppFactory;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Function handle a get request for the root resource
  */
 function getResources(Request $request, Response $response, $args) {
     $exposed_resources = array();
-    $exposed_resources['GET | All Artists'] = '/artists';
+    $exposed_resources['GET | All Anime'] = '/anime';
     $exposed_resources['GET | Artist By Id'] = '/artists/{artist_id}';
     $exposed_resources['GET | Album By Artist Id'] = '/artists/{artist_id}/albums';
     $exposed_resources['GET | Tracks By Artist And Album'] = '/artists/{artist_id}/albums/{album_id}/tracks';
@@ -32,7 +33,19 @@ function checkRepresentation(Request $request, Response $response, $data) {
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $response_data = json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE);
         $response_code = HTTP_OK;
-    } 
+    }
+    //to be fixed
+    else if ($requested_format[0] === APP_MEDIA_TYPE_XML) {
+        $xml = new SimpleXMLElement('');
+        array_walk_recursive($data, array ($xml,'addChild'));
+        $response_data = $xml->asXML();
+        $response_code = HTTP_OK;
+    }
+    //to be fixed
+    else if ($requested_format[0] === APP_MEDIA_TYPE_YAML) {
+        $response_data = Yaml::dump($data);
+        $response_code = HTTP_OK;
+    }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;

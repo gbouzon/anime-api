@@ -31,11 +31,13 @@ $app->get('/', "getResources");
 //Data retrieval - HTTP GET methods for the exposed resources
 $app->get('/anime', "getAllAnime");
 $app->get('/anime/{anime_id:[0-9]+}', "getAnimeById");
+// get all reviews associated with an anime
 $app->get('/anime/{anime_id:[0-9]+}/reviews', "getAnimeReviews");
 
 
 $app->get('/manga', "getAllManga");
 $app->get('/manga/{manga_id:[0-9]+}', "getMangaById");
+// get all reviews associated with a manga
 $app->get('/manga/{manga_id:[0-9]+}/reviews', "getMangaReviews");
 
 $app->get('/users', "getAllUsers");
@@ -48,15 +50,18 @@ $app->get('/users/{user_id:[0-9]+}/watched/manga', "getUserMangaWatched");
 
 $app->get('/studios', "getAllStudios");
 $app->get('/studios/{studio_id:[0-9]+}', "getStudioById");
+// get all anime associated with a studio
 $app->get('/studios/{studio_id:[0-9]+}/anime', "getStudioAnime");
 
 $app->get('/reviews', "getAllReviews");
 $app->get('/reviews/{review_id:[0-9]+}', "getReviewById");
 
-$app->get('/genres', "getAllGenres");
-$app->get('/genres/{genre_id:[0-9]+}', "getGenreById");
-$app->get('/genres/{genre_id:[0-9]+}/anime', "getGenreAnime"); //Giu Build 1
-$app->get('/genres/{genre_id:[0-9]+}/manga', "getGenreManga"); //Giu Build 1
+$app->get('/genres', "getAllGenres"); //DONE -> WORKING
+$app->get('/genres/{genre_id:[0-9]+}', "getGenreById"); //DONE -> WORKING
+// get all anime associated with a genre
+$app->get('/genres/{genre_id:[0-9]+}/anime', "getGenreAnime"); //Giu Build 1 -> DONE
+// get all manga associated with a genre
+$app->get('/genres/{genre_id:[0-9]+}/manga', "getGenreManga"); //Giu Build 1 -> DONE
 
 //Data manipulation - HTTP POST, PUT, and DELETE methods for the exposed resources
 
