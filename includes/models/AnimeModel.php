@@ -39,4 +39,51 @@ class AnimeModel extends BaseModel {
         $result = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
         return $result;
     }
+
+    /**
+     * Get all anime records whose description match the specified value 
+     * and whose name match the specified value 
+     * and whose year match the specified value
+     */
+    function getByNameDescriptionYear($name, $description, $year) {
+        $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND description LIKE :description AND year = :year";
+        $result = $this->run($sql, [":name" => "%" . $name . "%", ":description" => "%" . $description . "%", ":year" => $year])->fetchAll();
+        return $result;
+    }
+
+    /**
+     * Get all anime records whose description match the specified value
+     */
+    function getByDescription($description) {
+        $sql = "SELECT * FROM $this->table_name WHERE description LIKE :description";
+        $result = $this->run($sql, [":description" => "%" . $description . "%"])->fetchAll();
+        return $result;
+    }
+
+    /**
+     * Get all anime records whose year match the specified value
+     */
+    function getByYear($year) {
+        $sql = "SELECT * FROM $this->table_name WHERE year = :year";
+        $result = $this->run($sql, [":year" => $year])->fetchAll();
+        return $result;
+    }
+
+    function getByNameDescription($name, $description) {
+        $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND description LIKE :description";
+        $result = $this->run($sql, [":name" => "%" . $name . "%", ":description" => "%" . $description . "%"])->fetchAll();
+        return $result;
+    } 
+
+    function getByNameYear($name, $year) {
+        $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND year = :year";
+        $result = $this->run($sql, [":name" => "%" . $name . "%", ":year" => $year])->fetchAll();
+        return $result;
+    }
+
+    function getByDescriptionYear($description, $year) {
+        $sql = "SELECT * FROM $this->table_name WHERE description LIKE :description AND year = :year";
+        $result = $this->run($sql, [":description" => "%" . $description . "%", ":year" => $year])->fetchAll();
+        return $result;
+    }
 }
