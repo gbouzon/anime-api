@@ -23,32 +23,32 @@ function getAllAnime(Request $request, Response $response, array $args) {
     // if (checkParams(array("name", 'description', 'year'), $filter_params))
     if (isset($filter_params['name']) && isset($filter_params['description']) && isset($filter_params['year'])) {
         // Fetch the list of genres matching the provided name.
-        $genre = $genre_model->getByNameDescriptionYear($filter_params["name"], $filter_params['description'], $filter_params['year']);
+        $anime = $anime_model->getByNameDescriptionYear($filter_params["name"], $filter_params['description'], $filter_params['year']);
     } 
     else if (isset($filter_params['name']) && isset($filter_params['description'])) {
-        $genre = $genre_model->getByNameDescription($filter_params["name"], $filter_params['description']);
+        $anime = $anime_model->getByNameDescription($filter_params["name"], $filter_params['description']);
     }
     else if (isset($filter_params['name']) && isset($filter_params['year'])) {
-        $genre = $genre_model->getByNameYear($filter_params["name"], $filter_params['year']);
+        $anime = $anime_model->getByNameYear($filter_params["name"], $filter_params['year']);
     }
     else if (isset($filter_params['description']) && isset($filter_params['year'])) {
-        $genre = $genre_model->getByDescriptionYear($filter_params['description'], $filter_params['year']);
+        $anime = $anime_model->getByDescriptionYear($filter_params['description'], $filter_params['year']);
     }
     else if (isset($filter_params["name"])) {
-        $genre = $genre_model->getAnimeByName($filter_params["name"]);
+        $anime = $anime_model->getAnimeByName($filter_params["name"]);
     }
     else if (isset($filter_params['description'])) {
-        $genre = $genre_model->getAnimeByDescription($filter_params['description']);
+        $anime = $anime_model->getAnimeByDescription($filter_params['description']);
     }
     else if (isset($filter_params['year'])) {
-        $genre = $genre_model->getAnimeByYear($filter_params['year']);
+        $anime = $anime_model->getAnimeByYear($filter_params['year']);
     }
     else {
         // No filtering by genre name or description detected.
-        $genre = $genre_model->getAll();
+        $anime = $anime_model->getAll();
     }
 
-    return checkRepresentation($request, $response, $genre);
+    return checkRepresentation($request, $response, $anime);
 }
 
 // filters: anime name, username, genre

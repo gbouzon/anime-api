@@ -18,7 +18,7 @@ class AnimeModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql);
+        $result = $this->run($sql)->fetchAll();
         return $result;
     }
 
