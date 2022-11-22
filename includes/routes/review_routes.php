@@ -5,7 +5,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 //var_dump($_SERVER["REQUEST_METHOD"]);
 use Slim\Factory\AppFactory;
 
-require_once __DIR__ . './../routes/base_routes.php';
+require_once __DIR__ . './../helpers/helper_functions.php';
+require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/ReviewModel.php';
 
@@ -13,7 +14,6 @@ require_once __DIR__ . './../models/ReviewModel.php';
 function getAllReviews(Request $request, Response $response, array $args) {
     $reviews = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $review_model = new ReviewModel();
     $reviews = $review_model->getAll();
     return checkRepresentation($request, $response, $reviews);
@@ -39,7 +39,6 @@ function getAnimeReviews(Request $request, Response $response, array $args) {
 function getMangaReviews(Request $request, Response $response, array $args) {
     $reviews_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $review_model = new ReviewModel();
 
     $filter_params = $request->getQueryParams();
@@ -53,6 +52,6 @@ function getMangaReviews(Request $request, Response $response, array $args) {
             $reviews_info = $review_model->getMangaReviews($manga_id);
         return checkData($reviews_info, $response, $request);
     }
-    return unsupportedOperation($request, $response); 
+    return httpMethodNotAllowed(); 
 }
 

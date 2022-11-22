@@ -5,7 +5,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 //var_dump($_SERVER["REQUEST_METHOD"]);
 use Slim\Factory\AppFactory;
 
-require_once __DIR__ . './../routes/base_routes.php';
+require_once __DIR__ . './../helpers/helper_functions.php';
+require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/GenreModel.php';
 
@@ -15,7 +16,6 @@ require_once __DIR__ . './../models/GenreModel.php';
 function getAllGenres(Request $request, Response $response, array $args) {
     $genre = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $genre_model = new GenreModel();
 
     // Retrieve the query string parameter from the request's URI.
@@ -34,7 +34,6 @@ function getAllGenres(Request $request, Response $response, array $args) {
         // No filtering by genre name or description detected.
         $genre = $genre_model->getAll();
     }
-
     return checkRepresentation($request, $response, $genre);
 }
 
@@ -43,7 +42,6 @@ function getAllGenres(Request $request, Response $response, array $args) {
 function getGenreById(Request $request, Response $response, array $args) {
     $genre_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $genre_model = new GenreModel();
 
     // Retrieve the genre if from the request's URI.
@@ -53,13 +51,12 @@ function getGenreById(Request $request, Response $response, array $args) {
         $genre_info = $genre_model->getGenreById($genre_id);
         return checkData($genre_info, $response, $request);
     }
-    return unsupportedOperation($request, $response);  
+    return httpMethodNotAllowed();  
 }
 
 function getGenreAnime(Request $request, Response $response, array $args) {
     $genre_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $genre_model = new GenreModel();
 
     // Retrieve the genre if from the request's URI.
@@ -69,13 +66,12 @@ function getGenreAnime(Request $request, Response $response, array $args) {
         $genre_info = $genre_model->getAllAnimeFromGenre($genre_id);
         return checkData($genre_info, $response, $request);
     }
-    return unsupportedOperation($request, $response);  
+    return httpMethodNotAllowed();  
 }
 
 function getGenreManga(Request $request, Response $response, array $args) {
     $genre_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $genre_model = new GenreModel();
 
     // Retrieve the genre if from the request's URI.
@@ -85,7 +81,5 @@ function getGenreManga(Request $request, Response $response, array $args) {
         $genre_info = $genre_model->getAllMangaFromGenre($genre_id);
         return checkData($genre_info, $response, $request);
     }
-    return unsupportedOperation($request, $response);  
+    return httpMethodNotAllowed();
 }
-
-

@@ -5,7 +5,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 //var_dump($_SERVER["REQUEST_METHOD"]);
 use Slim\Factory\AppFactory;
 
-require_once __DIR__ . './../routes/base_routes.php';
+require_once __DIR__ . './../helpers/helper_functions.php';
+require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/AnimeModel.php';
 
@@ -15,7 +16,6 @@ require_once __DIR__ . './../models/AnimeModel.php';
 function getAllAnime(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $anime_model = new AnimeModel();
 
     // Retrieve the query string parameter from the request's URI.
@@ -54,7 +54,6 @@ function getAllAnime(Request $request, Response $response, array $args) {
 function getAnimeByStudio(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $anime_model = new AnimeModel();
 
     $anime = $anime_model->getAnimeByStudio($args["studio_id"]);
