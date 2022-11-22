@@ -15,6 +15,15 @@ class ReviewModel extends BaseModel {
 
     
     /**
+     * Get all review records.
+     */
+    function getAll() {
+        $sql = "SELECT * FROM $this->table_name";
+        $result = $this->run($sql)->fetchAll();
+        return $result;
+    }
+    
+    /**
      * Get all Reviews records of a specific manga.
      */
     function getMangaReviews($manga_id){

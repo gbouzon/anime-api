@@ -11,6 +11,15 @@ require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/ReviewModel.php';
 
 
+function getAllReviews(Request $request, Response $response, array $args) {
+    $reviews = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $review_model = new ReviewModel();
+    $reviews = $review_model->getAll();
+    return checkRepresentation($request, $response, $reviews);
+}
+
 function getMangaReviews(Request $request, Response $response, array $args) {
     $reviews_info = array();
     $response_data = array();
