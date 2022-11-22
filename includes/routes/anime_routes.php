@@ -61,11 +61,6 @@ function getAnimeByStudio(Request $request, Response $response, array $args) {
     return checkRepresentation($request, $response, $anime);
 }
 
-// filters: anime name, username, genre
-function getAnimeReviews(Request $request, Response $response, array $args) {
-  
-}
-
 // Callback for HTTP GET /artists/{artist_id}
 // Returns the artist with the specified ID.
 function getAnimeById(Request $request, Response $response, array $args) {
