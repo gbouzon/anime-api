@@ -18,7 +18,7 @@ class MangaModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql);
+        $result = $this->run($sql)->fetchAll();
         return $result;
     }
 
@@ -37,6 +37,18 @@ class MangaModel extends BaseModel {
     function getMangaByName($name) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name";
         $result = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
+        return $result;
+    }
+
+    function getByTitleMangaka($title, $mangaka) {
+        $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND mangaka LIKE :mangaka";
+        $result = $this->run($sql, [":name" => "%" . $title . "%", ":mangaka" => "%" . $mangaka . "%"])->fetchAll();
+        return $result;
+    }
+
+    function getByMangaka($mangaka) {
+        $sql = "SELECT * FROM $this->table_name WHERE mangaka LIKE :mangaka";
+        $result = $this->run($sql, [":mangaka" => "%" . $mangaka . "%"])->fetchAll();
         return $result;
     }
 }

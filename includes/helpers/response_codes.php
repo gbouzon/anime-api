@@ -77,7 +77,6 @@ function httpTeapot() {
     return json_encode($response_data);
 }
 
-
 /**
  * Returns a custom error using the passed error code and message
  */
