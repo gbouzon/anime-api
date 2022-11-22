@@ -24,11 +24,20 @@ class ReviewModel extends BaseModel {
     }
     
     /**
-     * Get all Reviews records of a specific manga.
+     * Get all Reviews records of a specific anime.
      */
     function getAnimeReviews($anime_id){
         $sql = "SELECT * FROM $this->table_name WHERE anime_id = ?";
         $result = $this->run($sql, [$anime_id])->fetchAll();
+        return $result;
+    }
+
+    /**
+     * Get all Reviews records of a specific anime.
+     */
+    function getUserReviews($user_id){
+        $sql = "SELECT * FROM $this->table_name WHERE user_id = ?";
+        $result = $this->run($sql, [$user_id])->fetchAll();
         return $result;
     }
 

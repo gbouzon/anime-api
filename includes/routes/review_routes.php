@@ -19,6 +19,21 @@ function getAllReviews(Request $request, Response $response, array $args) {
     return checkRepresentation($request, $response, $reviews);
 }
 
+function getUserReviews(Request $request, Response $response, array $args) {
+    $reviews = array();
+    $response_data = array();
+    $review_model = new ReviewModel();
+
+    // Retrieve the user if from the request's URI.
+    $user_id= $args["user_id"];
+    if (isset($user_id)) {
+        // Fetch the info about the specified user.
+        $reviews = $review_model->getUserReviews($user_id);
+        return checkData($reviews, $response, $request);
+    }
+    return unsupportedOperation($request, $response);
+}
+
 function getAnimeReviews(Request $request, Response $response, array $args) {
     $reviews_info = array();
     $response_data = array();
