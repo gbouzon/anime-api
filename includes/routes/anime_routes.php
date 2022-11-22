@@ -12,7 +12,7 @@ require_once __DIR__ . './../models/AnimeModel.php';
 
 // get routes: getAllAnime, getAnimeById, getAnimeReviews
 
-//filtering allowed by: name, description, year
+//filtering allowed by: name, description, year, studio name, studio id
 function getAllAnime(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
@@ -20,8 +20,13 @@ function getAllAnime(Request $request, Response $response, array $args) {
 
     // Retrieve the query string parameter from the request's URI.
     $filter_params = $request->getQueryParams();
-    // if (checkParams(array("name", 'description', 'year'), $filter_params))
-    if (isset($filter_params['name']) && isset($filter_params['description']) && isset($filter_params['year'])) {
+    if (isset($filter_params['studio_name'])) {
+        $anime = $anime_model->getAnimeByStudioName($filter_params["studio_name"]);
+    }
+    else if (isset($filter_params['studio_id'])) {
+        $anime = $anime_model->getAnimeByStudio($filter_params['studio_id']);
+    }
+    else if (isset($filter_params['name']) && isset($filter_params['description']) && isset($filter_params['year'])) {
         // Fetch the list of genres matching the provided name.
         $anime = $anime_model->getByNameDescriptionYear($filter_params["name"], $filter_params['description'], $filter_params['year']);
     } 
