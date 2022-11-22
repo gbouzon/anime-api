@@ -18,7 +18,7 @@ class UserModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql);
+        $result = $this->run($sql)->fetchAll();
         return $result;
     }
 
@@ -28,6 +28,18 @@ class UserModel extends BaseModel {
     function getUserById($user_id) {
         $sql = "SELECT * FROM $this->table_name WHERE user_id = ?";
         $result = $this->run($sql, [$user_id])->fetch();
+        return $result;
+    }
+
+    function getUserByUsername($username) {
+        $sql = "SELECT * FROM $this->table_name WHERE username = ?";
+        $result = $this->run($sql, [$username])->fetchAll();
+        return $result;
+    }
+
+    function getUserByReviewID($review_id) {
+        $sql = "SELECT * FROM $this->table_name WHERE user_id = (SELECT user_id FROM review WHERE review_id = ?)";
+        $result = $this->run($sql, [$review_id])->fetch();
         return $result;
     }
 

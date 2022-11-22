@@ -10,6 +10,28 @@ require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/UserModel.php';
 
 
+function getAllUsers(Request $request, Response $response, array $args) {
+    $users = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $user_model = new UserModel();
+
+    $filter_params = $request->getQueryParams();
+    if (isset($filter_params['userid'])) {
+        $users = $user_model->getUserById($filter_params["userid"]);
+    } 
+    else if (isset($filter_params['username'])) {
+        $users = $user_model->getUserByUsername($filter_params["username"]);
+    }
+    else if (isset($filter_params['reviewid'])) {
+        $users = $user_model->getUserByReviewID($filter_params['reviewid']);
+    }
+    else {
+        $users = $user_model->getAll();
+    }
+    return checkRepresentation($request, $response, $users);
+}
+
 function getUserMangaWatched(Request $request, Response $response, array $args) {
     $manga_info = array();
     $response_data = array();
