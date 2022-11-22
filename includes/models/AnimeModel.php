@@ -40,6 +40,12 @@ class AnimeModel extends BaseModel {
         return $result;
     }
 
+    function getAnimeByStudio($studio_id) {
+        $sql = "SELECT * FROM $this->table_name WHERE anime_id IN (SELECT anime_id FROM production WHERE studio_id = ?)";
+        $result = $this->run($sql, [$studio_id])->fetchAll();
+        return $result;
+    }
+
     /**
      * Get all anime records whose description match the specified value 
      * and whose name match the specified value 

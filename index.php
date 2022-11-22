@@ -49,7 +49,7 @@ $app->get('/users/{user_id:[0-9]+}/watched/manga', "getUserMangaWatched");
 
 $app->get('/studios', "getAllStudios");
 // get all anime associated with a studio
-$app->get('/studios/{studio_id:[0-9]+}/anime', "getStudioAnime");
+$app->get('/studios/{studio_id:[0-9]+}/anime', "getAnimeByStudio");
 
 $app->get('/reviews', "getAllReviews");
 $app->get('/reviews/{review_id:[0-9]+}', "getReviewById");

@@ -51,6 +51,16 @@ function getAllAnime(Request $request, Response $response, array $args) {
     return checkRepresentation($request, $response, $anime);
 }
 
+function getAnimeByStudio(Request $request, Response $response, array $args) {
+    $anime = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $anime_model = new AnimeModel();
+
+    $anime = $anime_model->getAnimeByStudio($args["studio_id"]);
+    return checkRepresentation($request, $response, $anime);
+}
+
 // filters: anime name, username, genre
 function getAnimeReviews(Request $request, Response $response, array $args) {
   

@@ -10,7 +10,7 @@ require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/StudioModel.php';
 
 
-function getAllStudios(Request $request, Response $response, $args) {
+function getAllStudios(Request $request, Response $response, array $args) {
     $studios = array();
     $response_data = array();
     $response_code = HTTP_OK;
