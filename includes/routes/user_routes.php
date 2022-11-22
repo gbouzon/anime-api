@@ -17,14 +17,14 @@ function getAllUsers(Request $request, Response $response, array $args) {
     $user_model = new UserModel();
 
     $filter_params = $request->getQueryParams();
-    if (isset($filter_params['userid'])) {
-        $users = $user_model->getUserById($filter_params["userid"]);
+    if (isset($filter_params['user_id'])) {
+        $users = $user_model->getUserById($filter_params["user_id"]);
     } 
     else if (isset($filter_params['username'])) {
         $users = $user_model->getUserByUsername($filter_params["username"]);
     }
-    else if (isset($filter_params['reviewid'])) {
-        $users = $user_model->getUserByReviewID($filter_params['reviewid']);
+    else if (isset($filter_params['review_id'])) {
+        $users = $user_model->getUserByReviewID($filter_params['review_id']);
     }
     else {
         $users = $user_model->getAll();

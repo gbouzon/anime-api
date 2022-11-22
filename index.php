@@ -41,7 +41,6 @@ $app->get('/manga/{manga_id:[0-9]+}', "getMangaById");
 $app->get('/manga/{manga_id:[0-9]+}/reviews', "getMangaReviews");
 
 $app->get('/users', "getAllUsers");
-$app->get('/users/{user_id:[0-9]+}', "getUserById");
 $app->get('/users/{user_id:[0-9]+}/reviews', "getUserReviews");
 $app->get('/users/{user_id:[0-9]+}/toWatch/anime', "getUserAnimeToWatch");
 $app->get('/users/{user_id:[0-9]+}/watched/anime', "getUserAnimeWatched");
@@ -49,7 +48,6 @@ $app->get('/users/{user_id:[0-9]+}/toWatch/manga', "getUserMangaToWatch");
 $app->get('/users/{user_id:[0-9]+}/watched/manga', "getUserMangaWatched");
 
 $app->get('/studios', "getAllStudios");
-$app->get('/studios/{studio_id:[0-9]+}', "getStudioById");
 // get all anime associated with a studio
 $app->get('/studios/{studio_id:[0-9]+}/anime', "getStudioAnime");
 
