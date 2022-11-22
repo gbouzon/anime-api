@@ -14,7 +14,6 @@ require_once __DIR__ . './../models/UserModel.php';
 function getAllUsers(Request $request, Response $response, array $args) {
     $users = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $user_model = new UserModel();
 
     $filter_params = $request->getQueryParams();
@@ -36,7 +35,6 @@ function getAllUsers(Request $request, Response $response, array $args) {
 function getUserMangaWatched(Request $request, Response $response, array $args) {
     $manga_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $user_model = new UserModel();
 
     // Retrieve the user if from the request's URI.
@@ -46,14 +44,12 @@ function getUserMangaWatched(Request $request, Response $response, array $args) 
         $manga_info = $user_model->getUserMangaWatched($user_id);
         return checkData($manga_info, $response, $request);
     }
-    return unsupportedOperation($request, $response); 
+    return httpMethodNotAllowed(); 
 }
-
 
 function getUserMangaToWatch(Request $request, Response $response, array $args) {
     $manga_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $user_model = new UserModel();
 
     // Retrieve the user if from the request's URI.
@@ -63,13 +59,12 @@ function getUserMangaToWatch(Request $request, Response $response, array $args) 
         $manga_info = $user_model->getUserMangaToWatch($user_id);
         return checkData($manga_info, $response, $request);
     }
-    return unsupportedOperation($request, $response); 
+    return httpMethodNotAllowed(); 
 }
 
 function getUserAnimeWatched(Request $request, Response $response, array $args) {
     $anime_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $user_model = new UserModel();
 
     // Retrieve the user if from the request's URI.
@@ -79,13 +74,12 @@ function getUserAnimeWatched(Request $request, Response $response, array $args) 
         $anime_info = $user_model->getUserAnimeWatched($user_id);
         return checkData($anime_info, $response, $request);
     }
-    return unsupportedOperation($request, $response); 
+    return httpMethodNotAllowed(); 
 }
 
 function getUserAnimeToWatch(Request $request, Response $response, array $args) {
     $anime_info = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $user_model = new UserModel();
 
     // Retrieve the user if from the request's URI.
@@ -95,9 +89,5 @@ function getUserAnimeToWatch(Request $request, Response $response, array $args) 
         $anime_info = $user_model->getUserAnimeToWatch($user_id);
         return checkData($anime_info, $response, $request);
     }
-    return unsupportedOperation($request, $response); 
+    return httpMethodNotAllowed(); 
 }
-
- 
-
-

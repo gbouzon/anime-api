@@ -16,7 +16,6 @@ require_once __DIR__ . './../models/AnimeModel.php';
 function getAllAnime(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $anime_model = new AnimeModel();
 
     // Retrieve the query string parameter from the request's URI.
@@ -55,7 +54,6 @@ function getAllAnime(Request $request, Response $response, array $args) {
 function getAnimeByStudio(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
-    $response_code = HTTP_OK;
     $anime_model = new AnimeModel();
 
     $anime = $anime_model->getAnimeByStudio($args["studio_id"]);

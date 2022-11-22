@@ -22,5 +22,5 @@ function getResources(Request $request, Response $response, $args) {
     $exposed_resources['DELETE | Delete Artist By Id'] = '/artists/{artist_id}';
     $exposed_resources['DELETE | Delete Customer By Id'] = '/customers/{customer_id}';
     $response->getBody()->write(json_encode($exposed_resources));
-    return $response->withStatus(200);
+    return $response->withStatus(HTTP_OK);
 }

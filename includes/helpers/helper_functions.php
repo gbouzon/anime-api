@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . './../helpers/response_codes.php';
+
 /**
  * Verify requested resource representation.
  */
@@ -22,7 +24,7 @@ function checkRepresentation(Request $request, Response $response, $data) {
         $response_code = HTTP_OK;
     }
     else {
-        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_data = httpUnsupportedMediaType();
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
     $response->getBody()->write($response_data);
@@ -34,7 +36,7 @@ function checkRepresentation(Request $request, Response $response, $data) {
  */
 function checkData($data, Response $response, Request $request) {
     if (!$data) {
-        $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found.");
+        $response_data = httpNotFound();
         $response->getBody()->write($response_data);
         return $response->withStatus(HTTP_NOT_FOUND);
     }

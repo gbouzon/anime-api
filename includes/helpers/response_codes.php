@@ -83,7 +83,7 @@ function httpTeapot() {
  */
 function makeCustomJSONError($error_code, $error_message) {
     $error_data = array(
-        "error:" => $error_code,
+        "status code:" => $error_code,
         "message:" => $error_message
     );
     return json_encode($error_data);
