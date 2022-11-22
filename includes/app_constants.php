@@ -29,6 +29,7 @@ define('HTTP_NO_CONTENT', 204);
 define('HTTP_METHOD_NOT_ALLOWED', 405);
 define('HTTP_UNSUPPORTED_MEDIA_TYPE', 415);
 define('HTTP_NOT_FOUND', 404);
+define('HTTP_TEAPOT', 418);
 
 // Supported Media Types.
 define('APP_MEDIA_TYPE_JSON', "application/json"); 
