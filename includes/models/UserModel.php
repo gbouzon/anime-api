@@ -33,7 +33,13 @@ class UserModel extends BaseModel {
 
     function getUserByUsername($username) {
         $sql = "SELECT * FROM $this->table_name WHERE username = ?";
-        $result = $this->run($sql, [$username])->fetchAll();
+        $result = $this->run($sql, [$username])->fetch();
+        return $result;
+    }
+
+    function getUserByEmail($email) {
+        $sql = "SELECT * FROM $this->table_name WHERE email = ?";
+        $result = $this->run($sql, [$email])->fetch();
         return $result;
     }
 
@@ -77,7 +83,6 @@ class UserModel extends BaseModel {
         $result = $this->run($sql, [$user_id])->fetchAll();
         return $result;
     }
-
     
     /**
      * Get all anime on user to-watch list
@@ -88,5 +93,13 @@ class UserModel extends BaseModel {
         WHERE list.user_id = ? && list.Type = 'to-watch'";
         $result = $this->run($sql, [$user_id])->fetchAll();
         return $result;
+    }
+
+    /**
+     * Get all anime on user to-watch list
+     */
+    function createUsers($user) {
+        $data = $this->insert($this->table_name, $user) ;
+        return $data;
     }
 }
