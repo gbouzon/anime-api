@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2022 at 04:56 PM
+-- Generation Time: Nov 24, 2022 at 01:46 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -450,20 +450,22 @@ CREATE TABLE `review` (
   `user_id` int(9) NOT NULL,
   `title` varchar(100) NOT NULL,
   `star_rating` decimal(1,0) NOT NULL DEFAULT 0 COMMENT 'must be between 0 and 5',
-  `content` varchar(500) DEFAULT NULL
+  `content` varchar(500) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `review`
 --
 
-INSERT INTO `review` (`review_id`, `anime_id`, `manga_id`, `user_id`, `title`, `star_rating`, `content`) VALUES
-(1, 10, NULL, 1, 'Jujutsu Kaisen doesn’t feel like a massively grand vision yet', '3', 'In its characters, its story structure, its tone, and its ease to hop into exciting powerup action the animation team flexed over, it gets what audiences want from Shonen material as a strong start to a story while removing or playing down stuff that’s been less palatable overtime'),
-(2, 4, NULL, 1, 'LOVE IT', '5', 'Code Geass is one of my favorite anime. Why? It\'s filled with so much action, bombastic dialogue, and has such eye-catching visuals that it tops the charts in entertainment value. This is an exciting and epic anime and it\'s over the top.'),
-(3, 10, NULL, 2, 'Jujutsu Kaisen THE BEST', '5', 'GO WATCH IT OH . MY . GODNESS IT IS SOOO GOOD I CANNOT EVEN BEGIN FO TO TELL YOU !!!\r\nThe animation is wonderful plus the voice acting and the characters are wonderful '),
-(4, 8, NULL, 2, 'This is a good anime, besides me feeling like the writers or makers are sexist', '0', 'It has cons like plot holes, lack of side character action its like the side characters are forgatten and they show naruto\'s flashback so many times. The female characters are just bad. And another bad thing that it is repetitive I have to be honest Naruto: Shippuden has its repeated parts and its just getting predictable'),
-(5, NULL, 52, 1, 'Solo Leveling', '3', 'Solo Leveling is good, but it doesn\'t feel like anything new. Cliches are not always a bad thing, a manga/anime can be very cliche and still be amazing.'),
-(6, 16, NULL, 3, 'Fire Force !!!!', '5', 'Loved it! It is definitely in my top ten favorite anime. It is one of the funniest animes I\'ve watched. The setting is never lacking and always feels new. Every fire station is like a whole new world. Just don\'t give up on it on the first episode because it gets way better the farther into the storyline we go, with amazing plot twists and engaging characters. The show did a good job of making serious topics hilarious. This anime is definitely worth a watch.');
+INSERT INTO `review` (`review_id`, `anime_id`, `manga_id`, `user_id`, `title`, `star_rating`, `content`, `date`) VALUES
+(1, 10, NULL, 1, 'Jujutsu Kaisen doesn’t feel like a massively grand vision yet', '3', 'In its characters, its story structure, its tone, and its ease to hop into exciting powerup action the animation team flexed over, it gets what audiences want from Shonen material as a strong start to a story while removing or playing down stuff that’s been less palatable overtime', '2022-11-24 00:37:52'),
+(2, 4, NULL, 1, 'LOVE IT', '5', 'Code Geass is one of my favorite anime. Why? It\'s filled with so much action, bombastic dialogue, and has such eye-catching visuals that it tops the charts in entertainment value. This is an exciting and epic anime and it\'s over the top.', '2022-11-24 00:37:52'),
+(3, 10, NULL, 2, 'Jujutsu Kaisen THE BEST', '5', 'GO WATCH IT OH . MY . GODNESS IT IS SOOO GOOD I CANNOT EVEN BEGIN FO TO TELL YOU !!!\r\nThe animation is wonderful plus the voice acting and the characters are wonderful ', '2022-11-24 00:37:52'),
+(4, 8, NULL, 2, 'This is a good anime, besides me feeling like the writers or makers are sexist', '0', 'It has cons like plot holes, lack of side character action its like the side characters are forgatten and they show naruto\'s flashback so many times. The female characters are just bad. And another bad thing that it is repetitive I have to be honest Naruto: Shippuden has its repeated parts and its just getting predictable', '2022-11-24 00:37:52'),
+(5, NULL, 52, 1, 'Solo Leveling', '3', 'Solo Leveling is good, but it doesn\'t feel like anything new. Cliches are not always a bad thing, a manga/anime can be very cliche and still be amazing.', '2022-11-24 00:37:52'),
+(6, 16, NULL, 3, 'Fire Force !!!!', '5', 'Loved it! It is definitely in my top ten favorite anime. It is one of the funniest animes I\'ve watched. The setting is never lacking and always feels new. Every fire station is like a whole new world. Just don\'t give up on it on the first episode because it gets way better the farther into the storyline we go, with amazing plot twists and engaging characters. The show did a good job of making serious topics hilarious. This anime is definitely worth a watch.', '2022-11-24 00:37:52'),
+(7, 12, NULL, 2, 'In Love', '5', 'IT IS SO FAR THE BEST ANIME I EVER SEE', '2022-11-24 00:37:52');
 
 -- --------------------------------------------------------
 
@@ -651,7 +653,7 @@ ALTER TABLE `production`
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `review_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `review_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `studio`
