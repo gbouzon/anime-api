@@ -72,3 +72,8 @@ function checkData($data, Response $response, Request $request) {
         return checkRepresentation($request, $response, $data);
     }
 }
+
+function response($response_data, $response_code, Response $response){
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}

@@ -96,7 +96,7 @@ class UserModel extends BaseModel {
     }
 
     /**
-     * Get all anime on user to-watch list
+     * Create one or more User 
      */
     function createUsers($user) {
         $data = $this->insert($this->table_name, $user) ;

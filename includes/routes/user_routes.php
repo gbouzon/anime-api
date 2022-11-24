@@ -100,45 +100,27 @@ function createUsers(Request $request, Response $response, array $args){
     $data = $request->getParsedBody();
     $user_model = new UserModel();
     
-    $userUsername = "";
-    $userFname = "";
-    $userLname = "";
-    $useremail = "";
-    $userPasswordHash = "";
-    $userPhone = "";
     for ($index =0; $index < count($data); $index++){
         $single_user = $data[$index];
-        // retieve data the key and its value
 
-        $userUsername = $single_user["username"];
-        $userFname = $single_user["fname"];
-        $userLname = $single_user["lname"];
-        $useremail = $single_user["email"];
-        $userPasswordHash =$single_user["password_hash"];
-        $userPhone = $single_user["phone"];
+        //check if the user exist already 
+        $checkExisteUserName = $user_model->getUserByUsername($single_user["username"];);
+        $checkExisteEmail = $user_model->getUserByEmail($single_user["email"]);
+        if($checkExisteUserName || $checkExisteEmail){
+            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
+        }
 
         $new_users_record = array(
-            "username" => $userUsername,
-            "fname" => $userFname,
-            "lname" => $userLname,
-            "email" => $useremail,
-            "password_hash" => $userPasswordHash,
-            "phone" => $userPhone
+            "username" => $single_user["username"];
+            "fname" => $single_user["fname"];
+            "lname" => $single_user["lname"];
+            "email" => $single_user["email"];
+            "password_hash" => $single_user["password_hash"];
+            "phone" => $single_user["phone"];
         );
-  
-        //check if the user exist already 
-        $checkExisteUserName = $user_model->getUserByUsername($userUsername);
-        $checkExisteEmail = $user_model->getUserByEmail($useremail);
-        if($checkExisteUserName || $checkExisteEmail){
-            $response_data = httpMethodNotAllowed();
-            $response->getBody()->write($response_data);
-            return $response->withStatus(HTTP_METHOD_NOT_ALLOWED);
-        }
-        
+       
         $user_model->createUsers($new_users_record);
     }
-    
-    $response_data = httpCreated();
-    $response->getBody()->write($response_data);
-    return $response;
+      
+    return response(httpCreated(), HTTP_CREATED, $response);
 }
