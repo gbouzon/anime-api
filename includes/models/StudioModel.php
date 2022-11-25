@@ -30,4 +30,26 @@ class StudioModel extends BaseModel {
         $result = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
         return $result;
     }
+
+    function getStudiobyAnimeTitle($animeTitle) {
+        $sql = "SELECT studio.*, anime.name FROM $this->table_name
+        INNER JOIN production 
+            ON production.studio_id = $this->table_name.studio_id
+        INNER JOIN anime
+            ON anime.anime_id =  production.anime_id  
+         WHERE anime.name LIKE :animeTitle";
+        $result = $this->run($sql, [":animeTitle" => "%" . $animeTitle . "%"])->fetchAll();
+        return $result;
+    }
+
+    function getStudiobyAnimeId($anime_id) {
+        $sql = "SELECT studio.*, anime.name FROM $this->table_name
+        INNER JOIN production 
+            ON production.studio_id = $this->table_name.studio_id
+        INNER JOIN anime
+            ON anime.anime_id =  production.anime_id  
+        WHERE anime.anime_id = ?";
+        $result = $this->run($sql, [$anime_id])->fetchAll();
+        return $result;
+    }
 }
