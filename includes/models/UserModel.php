@@ -102,4 +102,12 @@ class UserModel extends BaseModel {
         $data = $this->insert($this->table_name, $user) ;
         return $data;
     }
+
+    /**
+     * Delete one or more User
+     */
+    function deleteUsers($user_id){
+        $data = $this->deleteByIds($this->table_name, "user_id", $user_id);
+        return $data;
+    }
 }
