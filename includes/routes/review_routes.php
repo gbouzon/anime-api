@@ -15,11 +15,15 @@ function getAllReviews(Request $request, Response $response, array $args) {
     $reviews = array();
     $response_data = array();
     $review_model = new ReviewModel();
-    $reviews = $review_model->getAll();
-    return checkRepresentation($request, $response, $reviews);
+    $filter_params = $request->getQueryParams();
+    if(isset($filter_params['star_rating']))
+        $reviews = $review_model->getReviewsByRate($filter_params['star_rating']);
+    else
+        $reviews = $review_model->getAll();
+    return checkdata($reviews, $response, $request);
 }
 
-function getreviewReviews(Request $request, Response $response, array $args) {
+function getUserReviews(Request $request, Response $response, array $args) {
     $reviews = array();
     $response_data = array();
     $review_model = new ReviewModel();
@@ -28,7 +32,7 @@ function getreviewReviews(Request $request, Response $response, array $args) {
     $review_id= $args["review_id"];
     if (isset($review_id)) {
         // Fetch the info about the specified review.
-        $reviews = $review_model->getreviewReviews($review_id);
+        $reviews = $review_model->getUserReviews($review_id);
         return checkData($reviews, $response, $request);
     }
     return unsupportedOperation($request, $response);
@@ -44,8 +48,11 @@ function getAnimeReviews(Request $request, Response $response, array $args) {
     // Retrieve the review if from the request's URI.
     $anime_id= $args["anime_id"];
     if (isset($anime_id)) {
-        // Fetch the info about the specified review.
-        $reviews_info = $review_model->getAnimeReviews($anime_id);
+        if(isset($filter_params['star_rating']))
+            $reviews_info = $review_model->getAnimeReviewsByRate($anime_id, $filter_params['star_rating']);
+        else
+            // Fetch the info about the specified review.
+            $reviews_info = $review_model->getAnimeReviews($anime_id);
         return checkData($reviews_info, $response, $request);
     }
     return unsupportedOperation($request, $response); 

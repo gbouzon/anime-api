@@ -52,15 +52,45 @@ class ReviewModel extends BaseModel {
     /**
      * Get all Reviews records of a specific manga.
      */
-    function getReviewsByRate($manga_id, $rate){
+    function getReviewsByRate($rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE star_rating = :star_rating";
         $result = $this->run($sql, 
-        [   "manga_id" => $manga_id, 
+        [ 
             "star_rating" => $rate
         ])->fetchAll();
         return $result;
     }
+
+    /**
+     * Get all Reviews records of a specific manga.
+     */
+    function getMangaReviewsByRate($manga_id, $rate){
+        $sql = "SELECT * FROM $this->table_name 
+                WHERE manga_id = :manga_id AND star_rating = :star_rating";
+        $result = $this->run($sql, 
+        [ 
+            "manga_id" => $manga_id,
+            "star_rating" => $rate
+        ])->fetchAll();
+        return $result;
+    }
+
+    /**
+     * Get all Reviews records of a specific anime.
+     */
+    function getAnimeReviewsByRate($anime_id, $rate){
+        $sql = "SELECT * FROM $this->table_name 
+                WHERE anime_id= :anime_id AND star_rating = :star_rating";
+        $result = $this->run($sql, 
+        [ 
+            "anime_id" => $anime_id,
+            "star_rating" => $rate
+        ])->fetchAll();
+        return $result;
+    }
+
+
 
     /**
      * Create one or more review 
