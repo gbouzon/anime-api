@@ -13,7 +13,6 @@ class ReviewModel extends BaseModel {
         parent::__construct();
     }
 
-    
     /**
      * Get all review records.
      */
@@ -53,13 +52,29 @@ class ReviewModel extends BaseModel {
     /**
      * Get all Reviews records of a specific manga.
      */
-    function getMangaReviewsByRate($manga_id, $rate){
+    function getReviewsByRate($manga_id, $rate){
         $sql = "SELECT * FROM $this->table_name 
-                WHERE manga_id = :manga_id && star_rating = :star_rating";
+                WHERE star_rating = :star_rating";
         $result = $this->run($sql, 
         [   "manga_id" => $manga_id, 
             "star_rating" => $rate
         ])->fetchAll();
         return $result;
+    }
+
+    /**
+     * Create one or more review 
+     */
+    function createReviews($review) {
+        $data = $this->insert($this->table_name, $review) ;
+        return $data;
+    }
+
+    /**
+     * Delete one or more review
+     */
+    function deleteReviews($review_id){
+        $data = $this->deleteByIds($this->table_name, "review_id", $review_id);
+        return $data;
     }
 }

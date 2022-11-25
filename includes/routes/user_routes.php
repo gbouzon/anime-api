@@ -100,26 +100,29 @@ function createUsers(Request $request, Response $response, array $args){
     $data = $request->getParsedBody();
     $user_model = new UserModel();
     
+    
     for ($index =0; $index < count($data); $index++){
         $single_user = $data[$index];
 
         //check if the user exist already 
-        $checkExisteUserName = $user_model->getUserByUsername($single_user["username"];);
+        $checkExisteUserName = $user_model->getUserByUsername($single_user["username"]);
         $checkExisteEmail = $user_model->getUserByEmail($single_user["email"]);
         if($checkExisteUserName || $checkExisteEmail){
             return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
         }
 
+        // check if data is not null, () 
+
         $new_users_record = array(
-            "username" => $single_user["username"];
-            "fname" => $single_user["fname"];
-            "lname" => $single_user["lname"];
-            "email" => $single_user["email"];
-            "password_hash" => $single_user["password_hash"];
-            "phone" => $single_user["phone"];
+            "username" => $single_user["username"],
+            "fname" => $single_user["fname"],
+            "lname" => $single_user["lname"],
+            "email" => $single_user["email"],
+            "password_hash" => $single_user["password_hash"],
+            "phone" => $single_user["phone"]
         );
-       
-        $user_model->createUsers($new_users_record);
+       var_dump($new_users_record);
+        //$user_model->createUsers($new_users_record);
     }
       
     return response(httpCreated(), HTTP_CREATED, $response);
