@@ -65,5 +65,9 @@ $app->get('/genres/{genre_id:[0-9]+}/manga', "getGenreManga"); //Giu Build 1 -> 
 $app->post('/users', "createUsers");
 $app->post('/reviews', "createReviews");
 
+//Delete
+$app->delete('/users/{user_id:[0-9]+}', "deleteUsers");
+$app->delete('/reviews/{review_id:[0-9]+}', "deleteReviews");
+
 // Run the app.
 $app->run();

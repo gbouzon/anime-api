@@ -139,3 +139,28 @@ function createUsers(Request $request, Response $response, array $args){
       
     return response(httpCreated(), HTTP_CREATED, $response);
 }
+
+function deleteUsers(Request $request, Response $response,  array $args) {
+    $user_model = new UserModel();
+    $parsed_data = $request->getParsedBody();
+    $response_code = HTTP_OK;
+    $user_id = $args["user_id"];
+
+    if(isset($user_id)){
+        if(!$user_model->getUserById($user_id)){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific user do not existed");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);       
+        }
+
+        $query_result = $user_model->deleteUsers($user_id);
+        if (!$query_result) {
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific user can not be delete");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+    }else{
+        $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The user_id need to be specify");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+    }
+    
+    return response(getSuccessDeleteMessage(), HTTP_OK, $response);
+}

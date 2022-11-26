@@ -88,3 +88,14 @@ function makeCustomJSONError($error_code, $error_message) {
     return json_encode($error_data);
 }
 
+/**
+ * Returns an error name and message if the the request was successfully deleted 
+ */
+function getSuccessDeleteMessage() {
+    $error_data = array(
+        "status code:" => HTTP_OK,
+        "message:" => "The request was successfully deleted"
+    );
+    return json_encode($error_data);
+}
+
