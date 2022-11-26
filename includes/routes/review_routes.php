@@ -179,3 +179,28 @@ function createReviews(Request $request, Response $response, array $args){
     return response(httpCreated(), HTTP_CREATED, $response);
 }
 
+function deleteReviews(Request $request, Response $response,  array $args) {
+    $review_model = new ReviewModel();
+    $parsed_data = $request->getParsedBody();
+    $response_code = HTTP_OK;
+    $review_id = $args["review_id"];
+
+    if(isset($review_id)){
+        if(!$review_model->getReviewById($review_id)){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific review do not existed");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);       
+        }
+
+        $query_result = $review_model->deleteReviews($review_id);
+        if (!$query_result) {
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific review can not be delete");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+    } else {
+        $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The review_id need to be specify");
+        return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+    }
+
+    return response(getSuccessDeleteMessage(), HTTP_OK, $response);
+}
+

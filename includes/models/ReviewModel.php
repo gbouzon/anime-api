@@ -22,21 +22,24 @@ class ReviewModel extends BaseModel {
         return $result;
     }
     
-    /**
-     * Get all Reviews records of a specific anime.
-     */
+   
     function getAnimeReviews($anime_id){
         $sql = "SELECT * FROM $this->table_name WHERE anime_id = ?";
         $result = $this->run($sql, [$anime_id])->fetchAll();
         return $result;
     }
 
-    /**
-     * Get all Reviews records of a specific anime.
-     */
+    
     function getUserReviews($user_id){
         $sql = "SELECT * FROM $this->table_name WHERE user_id = ?";
         $result = $this->run($sql, [$user_id])->fetchAll();
+        return $result;
+    }
+
+   
+    function getReviewById($review_id){
+        $sql = "SELECT * FROM $this->table_name WHERE review_id = ?";
+        $result = $this->run($sql, [$review_id])->fetch();
         return $result;
     }
 
@@ -49,9 +52,7 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
-    /**
-     * Get all Reviews records of a specific manga.
-     */
+    
     function getReviewsByRate($rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE star_rating = :star_rating";
@@ -62,9 +63,7 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
-    /**
-     * Get all Reviews records of a specific manga.
-     */
+    
     function getMangaReviewsByRate($manga_id, $rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE manga_id = :manga_id AND star_rating = :star_rating";
@@ -76,9 +75,7 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
-    /**
-     * Get all Reviews records of a specific anime.
-     */
+    
     function getAnimeReviewsByRate($anime_id, $rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE anime_id= :anime_id AND star_rating = :star_rating";
@@ -110,8 +107,6 @@ class ReviewModel extends BaseModel {
         $result = $this->run($sql, [$date . "%"])->fetchAll();
         return $result;
     }
-
-
 
     /**
      * Create one or more review 
