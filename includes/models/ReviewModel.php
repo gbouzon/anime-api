@@ -90,6 +90,27 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
+    function getReviewsBeforeDate($date){
+        $sql = "SELECT * FROM $this->table_name 
+                WHERE date <= ?";
+        $result = $this->run($sql, [$date])->fetchAll();
+        return $result;
+    }
+
+    function getReviewsAfterDate($date){
+        $sql = "SELECT * FROM $this->table_name 
+                WHERE date >= ?";
+        $result = $this->run($sql, [$date])->fetchAll();
+        return $result;
+    }
+
+    function getReviewsOnDate($date){
+        $sql = "SELECT * FROM $this->table_name 
+                WHERE date Like ?";
+        $result = $this->run($sql, [$date . "%"])->fetchAll();
+        return $result;
+    }
+
 
 
     /**

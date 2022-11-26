@@ -77,3 +77,8 @@ function response($response_data, $response_code, Response $response){
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+function validateDate($date, $format = 'Y-m-d'){
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) === $date;
+}

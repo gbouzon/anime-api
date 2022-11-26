@@ -18,6 +18,25 @@ function getAllReviews(Request $request, Response $response, array $args) {
     $filter_params = $request->getQueryParams();
     if(isset($filter_params['star_rating']))
         $reviews = $review_model->getReviewsByRate($filter_params['star_rating']);
+    else if(isset($filter_params['date_before'])){
+        if(!validateDate($filter_params['date_before'])){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "Incorrect Date format. Should be 'YYYY-MM-DD' ");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+        $reviews = $review_model->getReviewsBeforeDate($filter_params['date_before']);
+    } else if(isset($filter_params['date_after'])){
+        if(!validateDate($filter_params['date_after'])){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "Incorrect Date format. Should be 'YYYY-MM-DD' ");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+        $reviews = $review_model->getReviewsAfterDate($filter_params['date_after']);
+    } else if (isset($filter_params['date_on'])){
+        if(!validateDate($filter_params['date_on'])){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "Incorrect Date format. Should be 'YYYY-MM-DD' ");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+        $reviews = $review_model->getReviewsOnDate($filter_params['date_on']);
+    }   
     else
         $reviews = $review_model->getAll();
     return checkdata($reviews, $response, $request);
