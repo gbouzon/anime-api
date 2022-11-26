@@ -88,45 +88,60 @@ function createReviews(Request $request, Response $response, array $args){
     $anime_model = new AnimeModel();
     $user_model = new UserModel();
 
-    for ($index =0; $index < count($data); $index++){
+    for ($index = 0; $index < count($data); $index++){
         $new_reviews_record = array();
         $single_review = $data[$index];
-        // To-Do: data can not be null 
+        // To-Do: data can not be null
+        foreach($single_review as $property => $value){
+            if($property == "user_id" || $property == "title" || $property == "star_rating"){
+                if(empty($value)){
+                    $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "$property property can not be null");
+                    return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+                }
+            }    
+        } 
 
         // check anime_id or manga_id isset and if its exist
         if(isset($single_review["anime_id"]) && isset($single_review["manga_id"])){
             $manga_id = $single_review["manga_id"];
             $anime_id = $single_review["anime_id"];
-            //if()
             if(!$manga_model->getMangaById($manga_id) || !$anime_model->getAnimeById($anime_id)){
-                return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response); // can be better error code
+                $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific anime or manga does not exist.");
+                return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response); 
             }
             $new_reviews_record["anime_id"] = $anime_id;
             $new_reviews_record["manga_id"] = $manga_id;
         }else if(isset($single_review["anime_id"])){
             if(!$anime_model->getAnimeById($single_review["anime_id"])){
-                return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response); // can be better error code
+                $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific anime does not exist.");
+                return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response); 
             }
             $new_reviews_record["anime_id"] = $single_review["anime_id"];
-        } 
-        else if(isset($single_review["manga_id"])){
+        }else if(isset($single_review["manga_id"])){
             if(!$manga_model->getMangaById($single_review["manga_id"])){
-                return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response); // can be better error code
+                $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific manga does not exist.");
+                return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response); 
             }
             $new_reviews_record["manga_id"] = $single_review["manga_id"];
-        }    
-        else
-            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response); // can be better error code
+        }else
+            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response); 
         
         //check user exited
-        if(!$user_model->getUserById($single_review["user_id"]))
-            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response); // can be better error code
+        if(!$user_model->getUserById($single_review["user_id"])){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The assigne User do not exist.");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response); 
+        }
+
         
          //check start_rating(between 1 to 0)
-        $start_rating =  $single_review["star_rating"];
-        if($start_rating > 5 || $single_review < 0){
-            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
-        }
+        if(isset($single_review["star_rating"])){
+            $star_rating =  $single_review["star_rating"];
+            if($star_rating > 5 || $single_review < 0){
+                $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "star_rating need to be between 0 and 5");
+                return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+            }
+        } 
+        
 
         $new_reviews_record = array_merge($new_reviews_record, 
             array("user_id" => $single_review["user_id"],
@@ -135,7 +150,11 @@ function createReviews(Request $request, Response $response, array $args){
             "content" => $single_review["content"])
         );
 
-        $review_model->createReviews($new_reviews_record);
+        $query_result = $review_model->createReviews($new_reviews_record);
+        if(!$query_result){
+            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+        
     }
       
     return response(httpCreated(), HTTP_CREATED, $response);
