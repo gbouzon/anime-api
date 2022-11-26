@@ -100,18 +100,26 @@ function createUsers(Request $request, Response $response, array $args){
     $data = $request->getParsedBody();
     $user_model = new UserModel();
     
-    
     for ($index =0; $index < count($data); $index++){
         $single_user = $data[$index];
+
+        // check if data is not null, () 
+        foreach($single_user as $property => $value){
+            if($property != "phone"){
+                if(empty($value)){
+                    $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "$property property can not be null");
+                    return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+                }
+            }    
+        }
 
         //check if the user exist already 
         $checkExisteUserName = $user_model->getUserByUsername($single_user["username"]);
         $checkExisteEmail = $user_model->getUserByEmail($single_user["email"]);
         if($checkExisteUserName || $checkExisteEmail){
-            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "Username or Email need to be Unique");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
         }
-
-        // check if data is not null, () 
 
         $new_users_record = array(
             "username" => $single_user["username"],
@@ -121,8 +129,12 @@ function createUsers(Request $request, Response $response, array $args){
             "password_hash" => $single_user["password_hash"],
             "phone" => $single_user["phone"]
         );
-       var_dump($new_users_record);
-        //$user_model->createUsers($new_users_record);
+
+        $query_result = $user_model->createUsers($new_users_record);
+        if(!$query_result){
+            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+        
     }
       
     return response(httpCreated(), HTTP_CREATED, $response);
