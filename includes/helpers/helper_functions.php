@@ -2,7 +2,6 @@
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-//var_dump($_SERVER["REQUEST_METHOD"]);
 use Slim\Factory\AppFactory;
 use Symfony\Component\Yaml\Yaml;
 
@@ -17,14 +16,12 @@ function checkRepresentation(Request $request, Response $response, $data) {
         $response_data = json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE);
         $response_code = HTTP_OK;
     }
-
     else if ($requested_format[0] === APP_MEDIA_TYPE_XML) {
         $xml = new SimpleXMLElement('<xmlresponse/>');
         array2XML($xml, $data);
         $response_data = $xml->asXML();
         $response_code = HTTP_OK;
     }
-
     else if ($requested_format[0] === APP_MEDIA_TYPE_YAML) {
         $response_data = Yaml::dump($data);
         $response_code = HTTP_OK;

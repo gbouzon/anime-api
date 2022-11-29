@@ -3,6 +3,11 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use GuzzleHttp\Client as Client;
+use GuzzleHttp\Psr7\Request as GuzzleRequest;    
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\RequestException;
 
 require __DIR__ . '/vendor/autoload.php';
 
