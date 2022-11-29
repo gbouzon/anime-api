@@ -68,6 +68,11 @@ $app->get('/genres/{genre_id:[0-9]+}/manga', "getGenreManga"); //Giu Build 1 -> 
 
 //Data manipulation - HTTP POST, PUT, and DELETE methods for the exposed resources
 $app->post('/users', "createUsers");
+$app->post('/reviews', "createReviews");
+
+//Delete
+$app->delete('/users/{user_id:[0-9]+}', "deleteUsers");
+$app->delete('/reviews/{review_id:[0-9]+}', "deleteReviews");
 
 // Run the app.
 $app->run();

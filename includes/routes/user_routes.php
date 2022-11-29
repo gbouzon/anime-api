@@ -100,45 +100,67 @@ function createUsers(Request $request, Response $response, array $args){
     $data = $request->getParsedBody();
     $user_model = new UserModel();
     
-    $userUsername = "";
-    $userFname = "";
-    $userLname = "";
-    $useremail = "";
-    $userPasswordHash = "";
-    $userPhone = "";
     for ($index =0; $index < count($data); $index++){
         $single_user = $data[$index];
-        // retieve data the key and its value
 
-        $userUsername = $single_user["username"];
-        $userFname = $single_user["fname"];
-        $userLname = $single_user["lname"];
-        $useremail = $single_user["email"];
-        $userPasswordHash =$single_user["password_hash"];
-        $userPhone = $single_user["phone"];
+        // check if data is not null, () 
+        foreach($single_user as $property => $value){
+            if($property != "phone"){
+                if(empty($value)){
+                    $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "$property property can not be null");
+                    return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+                }
+            }    
+        }
+
+        //check if the user exist already 
+        $checkExisteUserName = $user_model->getUserByUsername($single_user["username"]);
+        $checkExisteEmail = $user_model->getUserByEmail($single_user["email"]);
+        if($checkExisteUserName || $checkExisteEmail){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "Username or Email need to be Unique");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+        }
 
         $new_users_record = array(
-            "username" => $userUsername,
-            "fname" => $userFname,
-            "lname" => $userLname,
-            "email" => $useremail,
-            "password_hash" => $userPasswordHash,
-            "phone" => $userPhone
+            "username" => $single_user["username"],
+            "fname" => $single_user["fname"],
+            "lname" => $single_user["lname"],
+            "email" => $single_user["email"],
+            "password_hash" => $single_user["password_hash"],
+            "phone" => $single_user["phone"]
         );
-  
-        //check if the user exist already 
-        $checkExisteUserName = $user_model->getUserByUsername($userUsername);
-        $checkExisteEmail = $user_model->getUserByEmail($useremail);
-        if($checkExisteUserName || $checkExisteEmail){
-            $response_data = httpMethodNotAllowed();
-            $response->getBody()->write($response_data);
-            return $response->withStatus(HTTP_METHOD_NOT_ALLOWED);
+
+        $query_result = $user_model->createUsers($new_users_record);
+        if(!$query_result){
+            return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
         }
         
-        $user_model->createUsers($new_users_record);
+    }
+      
+    return response(httpCreated(), HTTP_CREATED, $response);
+}
+
+function deleteUsers(Request $request, Response $response,  array $args) {
+    $user_model = new UserModel();
+    $parsed_data = $request->getParsedBody();
+    $response_code = HTTP_OK;
+    $user_id = $args["user_id"];
+
+    if(isset($user_id)){
+        if(!$user_model->getUserById($user_id)){
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific user do not existed");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);       
+        }
+
+        $query_result = $user_model->deleteUsers($user_id);
+        if (!$query_result) {
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific user can not be delete");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+        }
+    }else{
+        $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The user_id need to be specify");
+            return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
     }
     
-    $response_data = httpCreated();
-    $response->getBody()->write($response_data);
-    return $response;
+    return response(getSuccessDeleteMessage(), HTTP_OK, $response);
 }
