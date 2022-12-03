@@ -61,7 +61,7 @@ class MangaModel extends BaseModel {
      * Update a Manga record.
      */
     public function updateManga($manga, $manga_id) {
-        $manga = $this->update('artist', $manga, array('ArtistId' => $manga_id));
+        $manga = $this->update('manga', $manga, array('manga_id' => $manga_id));
         return $manga;
     }
 

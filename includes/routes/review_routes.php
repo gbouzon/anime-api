@@ -177,6 +177,27 @@ function createReviews(Request $request, Response $response, array $args){
     return response(httpCreated(), HTTP_CREATED, $response);
 }
 
+function updateReviews (Request $request, Response $response, $args) {
+    $data = $request->getParsedBody();
+    $review_model = new ReviewModel();
+    $response_code = HTTP_OK;
+
+    if ($data) {
+        for ($index = 0; $index < count($data); $index++) {
+            $single_review = $data[$index];
+            $reviewId = $single_review['review_id'];
+            $existing_review_record = array(
+                "title" => $single_review["title"],
+                "star_rating" => $single_review["star_rating"],
+                "content" => $single_review["content"]
+            );
+            $review_model->updateReview($existing_review_record, $reviewId);
+        }
+        $response->getBody()->write(json_encode($data));
+        return $response->withStatus(200);
+    }
+}
+
 function deleteReviews(Request $request, Response $response,  array $args) {
     $review_model = new ReviewModel();
     $parsed_data = $request->getParsedBody();

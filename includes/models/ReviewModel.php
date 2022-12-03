@@ -120,7 +120,7 @@ class ReviewModel extends BaseModel {
      * Update a review record.
      */
     public function updateReview($review, $review_id) {
-        $review = $this->update('artist', $review, array('ArtistId' => $review_id));
+        $review = $this->update('review', $review, array('review_id' => $review_id));
         return $review;
     }
     

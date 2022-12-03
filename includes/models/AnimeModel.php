@@ -108,7 +108,7 @@ class AnimeModel extends BaseModel {
      * Update an anime record.
      */
     public function updateAnime($anime, $anime_id) {
-        $anime = $this->update('artist', $anime, array('ArtistId' => $anime_id));
+        $anime = $this->update('anime', $anime, array('anime_id' => $anime_id));
         return $anime;
     }
 
