@@ -110,7 +110,8 @@ class AnimeModel extends BaseModel {
         if ($data)
             return true;
         return false;
-        
+    }
+
     function insertAnime($name, $description, $year, $nb_releases, $cover_picture) {
         $sql = "INSERT INTO $this->table_name (name, description, year, nb_releases, cover_picture) VALUES (?, ?, ?, ?, ?)";
         $result = $this->run($sql, [$name, $description, $year, $nb_releases, $cover_picture]);

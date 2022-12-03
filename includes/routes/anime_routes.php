@@ -118,14 +118,25 @@ function createAnime(Request $request, Response $response, array $args) {
     $anime_model = new AnimeModel();
     $anime_info = array();
 
-    //goes through list of artists and adds them to the database
     for ($index = 0; $index < count($data); $index++) {
         $single_anime = $data[$index];
+        foreach($single_anime as $property => $value){
+            if ($property != "cover_picture") {
+                if(empty($value)){
+                    $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "$property property can not be null");
+                    return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+                }
+            }
+            else {
+                if (empty($value)) {
+                    $value = "blank.jpg";
+                }
+            }
+        }
         $animeId = $single_anime['anime_id'];
         if ($anime_model->doesAnimeIdExist($animeId))
-            //in case the artist id already exists in the database
             $response->getBody()->write(makeCustomJSONError("resourceAlreadyExists", "The specified anime with id '$animeId' already exists."));
-        else { //otherwise add the artist to the database
+        else {
             $new_anime_record = array(
                 "anime_id" => $animeId,
                 "production_id" => $single_anime['production_id'],
