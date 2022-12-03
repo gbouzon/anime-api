@@ -104,6 +104,14 @@ class AnimeModel extends BaseModel {
         return $data;
     }
 
+    /**
+     * Update an anime record.
+     */
+    public function updateAnime($anime, $anime_id) {
+        $anime = $this->update('artist', $anime, array('ArtistId' => $anime_id));
+        return $anime;
+    }
+
     function doesAnimeIdExist($anime_id) {
         $sql = "SELECT * FROM anime WHERE anime_id = ?";
         $data = $this->run($sql, [$anime_id])->fetch();

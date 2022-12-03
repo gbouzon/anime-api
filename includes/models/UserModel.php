@@ -103,6 +103,15 @@ class UserModel extends BaseModel {
         return $data;
     }
 
+
+    /**
+     * Update a User record.
+     */
+    public function updateUser($user, $user_id) {
+        $user = $this->update('artist', $user, array('ArtistId' => $user_id));
+        return $user;
+    }
+
     /**
      * Delete one or more User
      */

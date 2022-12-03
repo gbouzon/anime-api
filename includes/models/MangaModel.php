@@ -57,6 +57,14 @@ class MangaModel extends BaseModel {
         return $data;
     }
 
+    /**
+     * Update a Manga record.
+     */
+    public function updateManga($manga, $manga_id) {
+        $manga = $this->update('artist', $manga, array('ArtistId' => $manga_id));
+        return $manga;
+    }
+
     function doesMangaIdExist($anime_id) {
         $sql = "SELECT * FROM manga WHERE manga_id = ?";
         $data = $this->run($sql, [$anime_id])->fetch();

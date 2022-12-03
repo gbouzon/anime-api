@@ -117,6 +117,14 @@ class ReviewModel extends BaseModel {
     }
 
     /**
+     * Update a review record.
+     */
+    public function updateReview($review, $review_id) {
+        $review = $this->update('artist', $review, array('ArtistId' => $review_id));
+        return $review;
+    }
+    
+    /**
      * Delete one or more review
      */
     function deleteReviews($review_id){

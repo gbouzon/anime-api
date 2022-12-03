@@ -72,9 +72,10 @@ $app->post('/manga', "createManga");
 $app->post('/users', "createUsers");
 $app->post('/reviews', "createReviews");
 
-$app->put('/anime/{anime_id:[0-9]+}', "updateAnime");
-$app->put('/users/{user_id:[0-9]+}', "updateUsers");
-$app->put('/reviews/{review_id:[0-9]+}', "updateReviews");
+$app->put('/anime', "updateAnime");
+$app->put('/manga', "updateManga");
+$app->put('/users', "updateUsers");
+$app->put('/reviews', "updateReviews");
 
 //Delete
 $app->delete('/users/{user_id:[0-9]+}', "deleteUsers");
