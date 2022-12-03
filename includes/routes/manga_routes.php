@@ -34,3 +34,43 @@ function getAllManga(Request $request, Response $response, array $args) {
     }
     return checkRepresentation($request, $response, $manga);
 }
+
+function createManga(Request $request, Response $response, array $args) {
+    $data = $request->getParsedBody();
+    $manga_model = new MangaModel();
+    $manga_info = array();
+
+    for ($index = 0; $index < count($data); $index++) {
+        $single_manga = $data[$index];
+        foreach($single_manga as $property => $value){
+            if ($property != "cover_picture") {
+                if(empty($value)){
+                    $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "$property property can not be null");
+                    return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
+                }
+            }
+            else {
+                if (empty($value)) {
+                    $value = "blank.jpg";
+                }
+            }
+        }
+        $mangaId = $single_manga['manga_id'];
+        if ($manga_model->doesMangaIdExist($mangaId))
+            $response->getBody()->write(makeCustomJSONError("resourceAlreadyExists", "The specified anime with id '$mangaId' already exists."));
+        else {
+            $new_manga_record = array(
+                "manga_id" => $mangaId,
+                "name" => $single_manga['name'],
+                "description" => $single_manga['description'],
+                "year" => $single_manga['year'],
+                "mangaka" => $single_manga['mangaka'],
+                "num_of_volumes" => $single_manga['num_of_volumes'],
+                "cover_picture" => $single_manga['cover_picture'],
+            );
+            $manga_model->createManga($new_manga_record); 
+            $response->getBody()->write(json_encode($new_manga_record));
+        }
+    }
+    return $response->withStatus(200);
+}

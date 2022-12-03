@@ -147,7 +147,7 @@ function createReviews(Request $request, Response $response, array $args){
         
         //check user exited
         if(!$user_model->getUserById($single_review["user_id"])){
-            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The assigne User do not exist.");
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The assigned User do not exist.");
             return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response); 
         }
 
@@ -173,9 +173,7 @@ function createReviews(Request $request, Response $response, array $args){
         if(!$query_result){
             return response(httpMethodNotAllowed(), HTTP_METHOD_NOT_ALLOWED, $response);
         }
-        
     }
-      
     return response(httpCreated(), HTTP_CREATED, $response);
 }
 

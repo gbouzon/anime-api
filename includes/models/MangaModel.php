@@ -51,4 +51,17 @@ class MangaModel extends BaseModel {
         $result = $this->run($sql, [":mangaka" => "%" . $mangaka . "%"])->fetchAll();
         return $result;
     }
+
+    function createManga($manga) {
+        $data = $this->insert($this->table_name, $manga) ;
+        return $data;
+    }
+
+    function doesMangaIdExist($anime_id) {
+        $sql = "SELECT * FROM manga WHERE manga_id = ?";
+        $data = $this->run($sql, [$anime_id])->fetch();
+        if ($data)
+            return true;
+        return false;
+    }
 }
