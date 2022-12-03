@@ -100,7 +100,7 @@ class AnimeModel extends BaseModel {
     }
 
     function createAnime($anime) {
-        $data = $this->insert($this->table_name, $user) ;
+        $data = $this->insert($this->table_name, $anime) ;
         return $data;
     }
 
@@ -110,5 +110,16 @@ class AnimeModel extends BaseModel {
         if ($data)
             return true;
         return false;
+        
+    function insertAnime($name, $description, $year, $nb_releases, $cover_picture) {
+        $sql = "INSERT INTO $this->table_name (name, description, year, nb_releases, cover_picture) VALUES (?, ?, ?, ?, ?)";
+        $result = $this->run($sql, [$name, $description, $year, $nb_releases, $cover_picture]);
+        return $result;
+    }
+
+    function hasAnimePicture($animeId) {
+        $sql = "SELECT * FROM $this->table_name WHERE anime_id = :anime_id AND cover_picture IS NOT 'blank.png'";
+        $result = $this->run($sql, [$animeId])->fetch();
+        return $result;
     }
 }

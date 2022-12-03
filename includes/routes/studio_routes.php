@@ -22,8 +22,11 @@ function getAllStudios(Request $request, Response $response, array $args) {
     } 
     else if (isset($filter_params['name'])) {
         $studios = $studio_model->getStudioByName($filter_params["name"]);
-    }
-    else {
+    } else if(isset($filter_params['anime_title'])){
+        $studios = $studio_model->getStudiobyAnimeTitle($filter_params['anime_title']);
+    } else if(isset($filter_params['anime_id'])){
+        $studios = $studio_model->getStudiobyAnimeId($filter_params['anime_id']);
+    } else {
         $studios = $studio_model->getAll();
     }
     return checkRepresentation($request, $response, $studios);
