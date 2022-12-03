@@ -127,9 +127,9 @@ function createUsers(Request $request, Response $response, array $args){
         );
   
         //check if the user exist already 
-        $checkExisteUserName = $user_model->getUserByUsername($userUsername);
-        $checkExisteEmail = $user_model->getUserByEmail($useremail);
-        if($checkExisteUserName || $checkExisteEmail){
+        $checkExistUserName = $user_model->getUserByUsername($userUsername);
+        $checkExistEmail = $user_model->getUserByEmail($useremail);
+        if($checkExistUserName || $checkExistEmail){
             $response_data = httpMethodNotAllowed();
             $response->getBody()->write($response_data);
             return $response->withStatus(HTTP_METHOD_NOT_ALLOWED);

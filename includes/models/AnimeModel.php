@@ -98,4 +98,17 @@ class AnimeModel extends BaseModel {
         $result = $this->run($sql, [":description" => "%" . $description . "%", ":year" => $year])->fetchAll();
         return $result;
     }
+
+    function createAnime($anime) {
+        $data = $this->insert($this->table_name, $user) ;
+        return $data;
+    }
+
+    function doesAnimeIdExist($anime_id) {
+        $sql = "SELECT * FROM anime WHERE anime_id = ?";
+        $data = $this->run($sql, [$anime_id])->fetch();
+        if ($data)
+            return true;
+        return false;
+    }
 }

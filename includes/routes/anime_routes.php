@@ -70,3 +70,33 @@ function getAnimeByStudio(Request $request, Response $response, array $args) {
 function getAnimeById(Request $request, Response $response, array $args) {
     
 }
+
+function createAnime(Request $request, Response $response, array $args) {
+    $data = $request->getParsedBody();
+    $anime_model = new AnimeModel();
+    $anime_info = array();
+
+    //goes through list of artists and adds them to the database
+    for ($index = 0; $index < count($data); $index++) {
+        $single_anime = $data[$index];
+        $animeId = $single_anime['anime_id'];
+        if ($anime_model->doesAnimeIdExist($animeId))
+            //in case the artist id already exists in the database
+            $response->getBody()->write(makeCustomJSONError("resourceAlreadyExists", "The specified anime with id '$animeId' already exists."));
+        else { //otherwise add the artist to the database
+            $new_anime_record = array(
+                "anime_id" => $animeId,
+                "production_id" => $single_anime['production_id'],
+                "name" => $single_anime['name'],
+                "description" => $single_anime['description'],
+                "year" => $single_anime['year'],
+                "nb_releases" => $single_anime['nb_releases'],
+                "cover_picture" => $single_anime['cover_picture'],
+
+            );
+            $anime_model->createAnime($new_anime_record); 
+            $response->getBody()->write(json_encode($new_anime_record));
+        }
+    }
+    return $response->withStatus(200);
+}
