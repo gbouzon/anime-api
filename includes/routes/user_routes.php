@@ -144,20 +144,19 @@ function updateUser (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $user_model = new UserModel();
     $response_code = HTTP_OK;
+    $response_data = array();
 
     if ($data) {
         for ($index = 0; $index < count($data); $index++) {
             $single_user = $data[$index];
             $userId = $single_user['user_id'];
-            $existing_user_record = array(
-                "username" => $single_user["username"],
-                "fname" => $single_user["fname"],
-                "lname" => $single_user["lname"],
-                "email" => $single_user["email"],
-                "password_hash" => $single_user["password_hash"],
-                "phone" => $single_user["phone"]
-            );
-            $review_model->updateReview($existing_user_record, $userId);
+            foreach($single_user as $property => $value){
+                if ($property != "user_id") {
+                    if(!empty($value))
+                        $response_data += array($property => $value);
+                }
+            }
+            $review_model->updateReview($response_data, $userId);
         }
         $response->getBody()->write(json_encode($data));
         return $response->withStatus(200);

@@ -158,20 +158,19 @@ function updateAnime (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $anime_model = new AnimeModel();
     $response_code = HTTP_OK;
+    $response_data = array();
 
     if ($data) {
         for ($index = 0; $index < count($data); $index++) {
             $single_anime = $data[$index];
+            foreach($single_anime as $property => $value){
+                if ($property != "anime_id") {
+                    if(!empty($value))
+                        $response_data += array($property => $value);
+                }
+            }
             $animeId = $single_anime['anime_id'];
-            $existing_anime_record = array(
-                "production_id" => $single_anime['production_id'],
-                "name" => $single_anime['name'],
-                "description" => $single_anime['description'],
-                "year" => $single_anime['year'],
-                "nb_releases" => $single_anime['nb_releases'],
-                "cover_picture" => $single_anime['cover_picture'],
-            );
-            $anime_model->updateAnime($existing_anime_record, $animeId); // DO SQL
+            $anime_model->updateAnime($response_data, $animeId); // DO SQL
         }
         $response->getBody()->write(json_encode($data));
         return $response->withStatus(200);

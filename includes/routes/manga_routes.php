@@ -79,20 +79,19 @@ function updateManga (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $manga_model = new MangaModel();
     $response_code = HTTP_OK;
+    $response_data = array();
 
     if ($data) {
         for ($index = 0; $index < count($data); $index++) {
             $single_manga = $data[$index];
             $mangaId = $single_manga['manga_id'];
-            $existing_manga_record = array(
-                "name" => $single_manga['name'],
-                "description" => $single_manga['description'],
-                "year" => $single_manga['year'],
-                "mangaka" => $single_manga['mangaka'],
-                "num_of_volumes" => $single_manga['num_of_volumes'],
-                "cover_picture" => $single_manga['cover_picture'],
-            );
-            $manga_model->updateManga($existing_manga_record, $mangaId); // DO SQL
+            foreach($single_manga as $property => $value){
+                if ($property != "manga_id") {
+                    if(!empty($value))
+                        $response_data += array($property => $value);
+                }
+            }
+            $manga_model->updateManga($response_data, $mangaId); // DO SQL
         }
         $response->getBody()->write(json_encode($data));
         return $response->withStatus(200);

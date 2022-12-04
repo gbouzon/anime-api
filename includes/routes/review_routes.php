@@ -181,16 +181,18 @@ function updateReviews (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $review_model = new ReviewModel();
     $response_code = HTTP_OK;
+    $response_data = array();
 
     if ($data) {
         for ($index = 0; $index < count($data); $index++) {
             $single_review = $data[$index];
             $reviewId = $single_review['review_id'];
-            $existing_review_record = array(
-                "title" => $single_review["title"],
-                "star_rating" => $single_review["star_rating"],
-                "content" => $single_review["content"]
-            );
+            foreach($single_review as $property => $value){
+                if ($property != "review_id") {
+                    if(!empty($value))
+                        $response_data += array($property => $value);
+                }
+            }
             $review_model->updateReview($existing_review_record, $reviewId);
         }
         $response->getBody()->write(json_encode($data));
