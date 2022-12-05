@@ -39,7 +39,7 @@ function getAllReviews(Request $request, Response $response, array $args) {
     }   
     else
         $reviews = $review_model->getAll();
-    return checkdata($reviews, $response, $request);
+    return checkData($reviews, $response, $request);
 }
 
 function getUserReviews(Request $request, Response $response, array $args) {
@@ -48,13 +48,13 @@ function getUserReviews(Request $request, Response $response, array $args) {
     $review_model = new ReviewModel();
 
     // Retrieve the review if from the request's URI.
-    $review_id= $args["review_id"];
+    $review_id= $args["user_id"];
     if (isset($review_id)) {
         // Fetch the info about the specified review.
         $reviews = $review_model->getUserReviews($review_id);
         return checkData($reviews, $response, $request);
     }
-    return unsupportedOperation($request, $response);
+    return httpMethodNotAllowed();
 }
 
 function getAnimeReviews(Request $request, Response $response, array $args) {
@@ -74,7 +74,7 @@ function getAnimeReviews(Request $request, Response $response, array $args) {
             $reviews_info = $review_model->getAnimeReviews($anime_id);
         return checkData($reviews_info, $response, $request);
     }
-    return unsupportedOperation($request, $response); 
+    return httpMethodNotAllowed(); 
 }
 
 function getMangaReviews(Request $request, Response $response, array $args) {

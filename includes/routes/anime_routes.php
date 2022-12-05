@@ -27,6 +27,7 @@ $api_anime_details = "https://gogoanime.consumet.org/anime-details/";
 
 //filtering allowed by: name, description, year, studio name, studio id
 function getAllAnime(Request $request, Response $response, array $args) {
+    global $clientSearch, $clientDetails, $api_anime_search, $api_anime_details;
     $anime = array();
     $response_data = array();
     $anime_model = new AnimeModel();

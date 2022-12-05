@@ -11,19 +11,16 @@ use Symfony\Component\Yaml\Yaml;
  */
 function getResources(Request $request, Response $response, $args) {
     $exposed_resources = array();
-    $exposed_resources['GET | All Anime'] = '/anime';
-    $exposed_resources['GET | All Studios'] = '/studios';
-    $exposed_resources['GET | All Manga'] = '/manga';
-    $exposed_resources['GET | All Users'] = '/users';
-    $exposed_resources['GET | All Reviews'] = '/reviews';
-    $exposed_resources['GET | All Genres'] = '/genres';
-    $exposed_resources['GET | Anime By Id'] = '/anime/{anime_id}';
-    $exposed_resources['GET | Manga By Id'] = '/manga/{manga_id}';
-    $exposed_resources['GET | Reviews By Id'] = '/reviews/{review_id}';
-    $exposed_resources['GET | Genre By Id'] = '/genre/{genre_id}';
-    $exposed_resources['GET | Reviews By Anime'] = '/artists/{artist_id}/reviews';
+    $exposed_resources['GET | All Anime'] = '/anime'; //ok
+    $exposed_resources['GET | All Studios'] = '/studios'; //ok
+    $exposed_resources['GET | All Manga'] = '/manga'; //ok
+    $exposed_resources['GET | All Users'] = '/users'; //ok
+    $exposed_resources['GET | All Reviews'] = '/reviews'; //ok
+    $exposed_resources['GET | All Genres'] = '/genres'; //ok
+    $exposed_resources['GET | Genre By Id'] = '/genres/{genre_id}';//ok
+    $exposed_resources['GET | Reviews By Anime'] = '/anime/{anime_id}/reviews';
     $exposed_resources['GET | Reviews By Manga'] = '/manga/{manga_id}/reviews';
-    $exposed_resources['GET | Reviews By User'] = '/users/{user_id}';
+    $exposed_resources['GET | Reviews By User'] = '/users/{user_id}/reviews';
     $exposed_resources['GET | Anime on User\'s \"To Watch\" list'] = '/users/{user_id}/toWatch/anime';
     $exposed_resources['GET | Anime on User\'s \"Watched\" list'] = '/users/{user_id}/watched/anime';
     $exposed_resources['GET | Manga on User\'s \"To Watch\" list'] = '/users/{user_id}/toWatch/manga';
