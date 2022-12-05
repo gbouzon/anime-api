@@ -80,17 +80,17 @@ function getAllAnime(Request $request, Response $response, array $args) {
         //$anime = $anime_model->getAnimeByName($filter_params["name"]);
     }
     else if (isset($filter_params['description'])) {
-        $anime = $anime_model->getAnimeByDescription($filter_params['description']);
+        $anime = $anime_model->getByDescription($filter_params['description']);
     }
     else if (isset($filter_params['year'])) {
-        $anime = $anime_model->getAnimeByYear($filter_params['year']);
+        $anime = $anime_model->getByYear($filter_params['year']);
     }
     else {
         // No filtering by genre name or description detected.
         $anime = $anime_model->getAll();
     }
 
-    return checkRepresentation($request, $response, $anime);
+    return checkData($anime, $response, $request);
 }
 
 function getAnimeByStudio(Request $request, Response $response, array $args) {
@@ -99,7 +99,7 @@ function getAnimeByStudio(Request $request, Response $response, array $args) {
     $anime_model = new AnimeModel();
 
     $anime = $anime_model->getAnimeByStudio($args["studio_id"]);
-    return checkRepresentation($request, $response, $anime);
+    return checkData($anime, $response, $request);
 }
 
 function searchForAnime(Client $client, $anime_name) {
@@ -152,7 +152,7 @@ function createAnime(Request $request, Response $response, array $args) {
             $response->getBody()->write(json_encode($new_anime_record));
         }
     }
-    return $response->withStatus(200);
+    return $response->withStatus(HTTP_CREATED);
 }
 
 function updateAnime (Request $request, Response $response, $args) {

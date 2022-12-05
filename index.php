@@ -41,7 +41,6 @@ $app->get('/anime/{anime_id:[0-9]+}/reviews', "getAnimeReviews");
 
 
 $app->get('/manga', "getAllManga");
-$app->get('/manga/{manga_id:[0-9]+}', "getMangaById");
 // get all reviews associated with a manga
 $app->get('/manga/{manga_id:[0-9]+}/reviews', "getMangaReviews");
 

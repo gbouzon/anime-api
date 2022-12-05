@@ -32,7 +32,7 @@ function getAllManga(Request $request, Response $response, array $args) {
     else {
         $manga = $manga_model->getAll();
     }
-    return checkRepresentation($request, $response, $manga);
+    return checkData($manga, $response, $request);
 }
 
 function createManga(Request $request, Response $response, array $args) {
@@ -72,7 +72,7 @@ function createManga(Request $request, Response $response, array $args) {
             $response->getBody()->write(json_encode($new_manga_record));
         }
     }
-    return $response->withStatus(200);
+    return $response->withStatus(201);
 }
 
 function updateManga (Request $request, Response $response, $args) {

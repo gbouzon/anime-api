@@ -29,7 +29,7 @@ function getAllUsers(Request $request, Response $response, array $args) {
     else {
         $users = $user_model->getAll();
     }
-    return checkRepresentation($request, $response, $users);
+    return checkData($users, $response, $request);
 }
 
 function getUserMangaWatched(Request $request, Response $response, array $args) {

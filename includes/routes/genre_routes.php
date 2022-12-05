@@ -34,7 +34,7 @@ function getAllGenres(Request $request, Response $response, array $args) {
         // No filtering by genre name or description detected.
         $genre = $genre_model->getAll();
     }
-    return checkRepresentation($request, $response, $genre);
+    return checkData($genre, $response, $request);
 }
 
 // Callback for HTTP GET /artists/{artist_id}

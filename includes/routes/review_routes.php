@@ -101,6 +101,7 @@ function getMangaReviews(Request $request, Response $response, array $args) {
  * add one or more reviews  (resource URI: /reviews)
  */
 function createReviews(Request $request, Response $response, array $args){
+    //TODO: add check for review id (if user uts in an id, check if exists, if not leave autoincrement)
     $data = $request->getParsedBody();
     $review_model = new ReviewModel();
     $manga_model = new MangaModel();
@@ -208,17 +209,17 @@ function deleteReviews(Request $request, Response $response,  array $args) {
 
     if(isset($review_id)){
         if(!$review_model->getReviewById($review_id)){
-            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific review do not existed");
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific review does not exist");
             return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);       
         }
 
         $query_result = $review_model->deleteReviews($review_id);
         if (!$query_result) {
-            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific review can not be delete");
+            $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The specific review can not be deleted");
             return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
         }
     } else {
-        $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The review_id need to be specify");
+        $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The review_id need to be specified");
         return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response);
     }
 
