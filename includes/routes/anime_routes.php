@@ -18,11 +18,11 @@ require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/AnimeModel.php';
 
 //FOR COMPOSITE RESOURCES
-$api_anime_search = "https://gogoanime.consumet.org/search?keyw=";
+$api_anime_search = "https://gogoanime.consumet.org/";
 $api_anime_details = "https://gogoanime.consumet.org/anime-details/";
 
-//$clientSearch = new GuzzleHttp\Client(['base_uri' => $api_anime_search]);
-//$clientDetails = new GuzzleHttp\Client(['base_uri' => $api_anime_details]);
+$clientSearch = new GuzzleHttp\Client(['base_uri' => $api_anime_search]);
+$clientDetails = new GuzzleHttp\Client(['base_uri' => $api_anime_details]);
 
 
 //filtering allowed by: name, description, year, studio name, studio id
@@ -57,28 +57,27 @@ function getAllAnime(Request $request, Response $response, array $args) {
         $anime = $anime_model->getByDescriptionYear($filter_params['description'], $filter_params['year']);
     }
     else if (isset($filter_params["name"])) {
-
-        //check if exists in db so:
-            //CHECK WHAT THIS RETURNS WHEN NO MATCH IS FOUND *******
-        if ($anime_model->getAnimeByName($filter_params['name'])) {
-            //check if has cover picture
-            //before, think about:
-                //getAnimeByName uses LIKE with name in between %. It may return a list of anime that contain a certain keyword
-                //we'd have to get a perfect match taking into consideration lower() and upper() in order for this to work
-                //otherwise we'd just be adding the wrong cover picture to the anime record.
+        $anime = $anime_model->getAnimeByName($filter_params["name"]);
+        //if there's no anime by that name, query api and add to database
+        if (empty($anime)) {
+            $anime_search = searchForAnime($clientSearch, "search?keyw=" . $filter_params["name"]);
+            if (!empty($anime_search)) {
+                $animeNameId = $anime_search[0]->animeId;
+                $anime = getAnimeDetails($clientDetails, $animeNameId);
+                if (!empty($anime_model->getAnimeByName($anime->animeTitle))) {
+                    $anime = $anime_model->getAnimeByName($anime->animeTitle);
+                }
+                else {
+                    $anime_model->insertAnime($anime->animeTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
+                    $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
+                } 
+            }
         }
-        $clientSearch = new GuzzleHttp\Client(['base_uri' => "https://gogoanime.consumet.org/"]);
-        $anime = searchForAnime($clientSearch, "search?keyw=" . $filter_params["name"]);
-        //return list of anime, we grab always first result, anime id to get details
-        $animeNameId = $anime[0]->animeId;
-        $clientDetails = new GuzzleHttp\Client(['base_uri' => "https://gogoanime.consumet.org/anime-details/"]);
-        $anime = getAnimeDetails($clientDetails, $animeNameId);
-        $anime_model->insertAnime($anime->animeTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
-
-        //in our db we have: anime_id, production_id name, description, year, nb_releases, cover_picture
-        
-        //$anime = $anime_model->getAnimeByName($filter_params["name"]);
-    }
+        else {
+            //think if you want to add this because this is technically supposed to return a list of anime. either go through it one by one
+            //if there is a match, check if it has cover picture. if not, add it
+        }
+    } 
     else if (isset($filter_params['description'])) {
         $anime = $anime_model->getByDescription($filter_params['description']);
     }

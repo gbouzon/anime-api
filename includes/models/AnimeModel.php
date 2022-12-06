@@ -131,4 +131,9 @@ class AnimeModel extends BaseModel {
         $result = $this->run($sql, [$animeId])->fetch();
         return $result;
     }
+
+    function lastIdInsert() {
+        return $this->lastInsertId();
+    }
+
 }
