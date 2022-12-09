@@ -120,9 +120,9 @@ class AnimeModel extends BaseModel {
         return false;
     }
 
-    function insertAnime($name, $description, $year, $nb_releases, $cover_picture) {
-        $sql = "INSERT INTO $this->table_name (name, description, year, nb_releases, cover_picture) VALUES (?, ?, ?, ?, ?)";
-        $result = $this->run($sql, [$name, $description, $year, $nb_releases, $cover_picture]);
+    function insertAnime($name, $otherName, $description, $year, $nb_releases, $cover_picture) {
+        $sql = "INSERT INTO $this->table_name (name, other_name, description, year, nb_releases, cover_picture) VALUES (?,?, ?, ?, ?, ?)";
+        $result = $this->run($sql, [$name, $otherName, $description, $year, $nb_releases, $cover_picture]);
         return $result;
     }
 
@@ -134,6 +134,12 @@ class AnimeModel extends BaseModel {
 
     function lastIdInsert() {
         return $this->lastInsertId();
+    }
+
+    function addOtherTitle($title, $anime_id) {
+        $sql = "UPDATE anime SET other_name = :name WHERE anime_id = :anime_id";
+        $result = $this->run($sql, [$title, $anime_id]);
+        return $result;
     }
 
 }

@@ -56,6 +56,14 @@ function getAllAnime(Request $request, Response $response, array $args) {
     else if (isset($filter_params['description']) && isset($filter_params['year'])) {
         $anime = $anime_model->getByDescriptionYear($filter_params['description'], $filter_params['year']);
     }
+    //user types in a name, example: your lie in april
+    //check the database first and see if there's a record with that name
+    //if not, query the api for that name
+    //returns name as Shigatsu whatevers
+    //if the name is not the same as user input, check db again for that name
+    //if it is in the db, add input as other_name and return the record
+    //if not, check if the name is the same as user typed in, query the animedetails api for the id of that anime
+    //add it to db and return the record
     else if (isset($filter_params["name"])) {
         $anime = $anime_model->getAnimeByName($filter_params["name"]);
         //if there's no anime by that name, query api and add to database
@@ -63,7 +71,24 @@ function getAllAnime(Request $request, Response $response, array $args) {
             $anime_search = searchForAnime($clientSearch, "search?keyw=" . $filter_params["name"]);
             if (!empty($anime_search)) {
                 $animeNameId = $anime_search[0]->animeId;
+                $animeTitle = $anime_search[0]->animeTitle;
+                if ($animeTitle.lower() != $filter_params["name"].lower()) {
+                    $new_anime = $anime_model->getAnimeByName($filter_params["name"]);
+                    //if 
+                }
                 $anime = getAnimeDetails($clientDetails, $animeNameId);
+                $animeOtherTitle = $anime->otherNames;
+                if (!empty($animeOtherTitle)) {
+                        $other = $anime_model->getAnimeByName($animeOtherTitle[0]);
+                        if (!empty($other)) {
+                            $anime = $other;
+                        }
+                        else {
+                            $anime_model->addOtherTitle($animeOtherTitle[0], );
+                            $anime_model->insertAnime($animeOtherTitle[0], $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
+                            $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
+                        }
+                }
                 if (!empty($anime_model->getAnimeByName($anime->animeTitle))) {
                     $anime = $anime_model->getAnimeByName($anime->animeTitle);
                 }
@@ -73,6 +98,7 @@ function getAllAnime(Request $request, Response $response, array $args) {
                 } 
             }
         }
+        
         else {
             //think if you want to add this because this is technically supposed to return a list of anime. either go through it one by one
             //if there is a match, check if it has cover picture. if not, add it
