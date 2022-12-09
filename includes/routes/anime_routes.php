@@ -72,46 +72,35 @@ function getAllAnime(Request $request, Response $response, array $args) {
             if (!empty($anime_search)) {
                 $animeNameId = $anime_search[0]->animeId;
                 $animeTitle = $anime_search[0]->animeTitle;
-                if ($animeTitle.lower() != $filter_params["name"].lower()) {
-                    $new_anime = $anime_model->getAnimeByName($filter_params["name"]);
+                var_dump("nothing in db, got something from api");
+                var_dump($anime_search);
+                if (strtolower($animeTitle) != strtolower($filter_params["name"])) {
+                    $new_anime = $anime_model->getAnimeByName($animeTitle);
                     if (!empty($new_anime)) {
-                        $new_anime = $anime_model->addOtherTitle($filter_params["name"], $new_anime_id);
-                        $anime = $new_anime;
+                        $anime_model->addOtherTitle($filter_params["name"], $new_anime[0]['anime_id']);
+                        $anime = $anime_model->getAnimeById($new_anime[0]['anime_id']);
+                        var_dump("already in db, added other title");
                     }
-                    else {
-                        $anime = getAnimeDetails($clientDetails, $animeNameId);
-                        $animeOtherTitle = $anime->otherNames;
-                        $anime_model->insertAnime($anime->animeTitle, $animeOtherTitle[0], $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
-
-
-                    }
-                }
-                $anime = getAnimeDetails($clientDetails, $animeNameId);
-                $animeOtherTitle = $anime->otherNames;
-                if (!empty($animeOtherTitle)) {
-                        $other = $anime_model->getAnimeByName($animeOtherTitle[0]);
-                        if (!empty($other)) {
-                            $anime = $other;
-                        }
-                        else {
-                            $anime_model->addOtherTitle($animeOtherTitle[0], );
-                            $anime_model->insertAnime($animeOtherTitle[0], $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
-                            $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
-                        }
-                }
-                if (!empty($anime_model->getAnimeByName($anime->animeTitle))) {
-                    $anime = $anime_model->getAnimeByName($anime->animeTitle);
                 }
                 else {
-                    $anime_model->insertAnime($anime->animeTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
-                    $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
-                } 
+                    var_dump("not in db, found in search, getting details");
+                    $anime = getAnimeDetails($clientDetails, $animeNameId);
+                    if (!is_array($anime)) {
+                        $anime = [$anime];
+                    }
+                    var_dump($anime);
+                    $anime = $anime[0];
+                    $animeOtherTitle = $anime->otherNames;
+                    if (!empty($animeOtherTitle)) {
+                        $anime_model->insertAnime($anime->animeTitle, $animeOtherTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
+                        $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
+                    }
+                    else {
+                        $anime_model->insertAnime($anime->animeTitle, null, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
+                        $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
+                    } 
+                }
             }
-        }
-        
-        else {
-            //think if you want to add this because this is technically supposed to return a list of anime. either go through it one by one
-            //if there is a match, check if it has cover picture. if not, add it
         }
     } 
     else if (isset($filter_params['description'])) {
