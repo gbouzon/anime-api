@@ -74,7 +74,17 @@ function getAllAnime(Request $request, Response $response, array $args) {
                 $animeTitle = $anime_search[0]->animeTitle;
                 if ($animeTitle.lower() != $filter_params["name"].lower()) {
                     $new_anime = $anime_model->getAnimeByName($filter_params["name"]);
-                    //if 
+                    if (!empty($new_anime)) {
+                        $new_anime = $anime_model->addOtherTitle($filter_params["name"], $new_anime_id);
+                        $anime = $new_anime;
+                    }
+                    else {
+                        $anime = getAnimeDetails($clientDetails, $animeNameId);
+                        $animeOtherTitle = $anime->otherNames;
+                        $anime_model->insertAnime($anime->animeTitle, $animeOtherTitle[0], $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
+
+
+                    }
                 }
                 $anime = getAnimeDetails($clientDetails, $animeNameId);
                 $animeOtherTitle = $anime->otherNames;
