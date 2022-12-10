@@ -18,7 +18,7 @@ class AnimeModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql)->fetchAll();
+        $result = $this->paginate($sql);
         return $result;
     }
 
@@ -27,7 +27,7 @@ class AnimeModel extends BaseModel {
      */
     function getAnimeById($anime_id) {
         $sql = "SELECT * FROM $this->table_name WHERE anime_id = ?";
-        $result = $this->run($sql, [$anime_id])->fetch();
+        $result = $this->paginate($sql, [$anime_id]);
         return $result;
     }
 
@@ -36,19 +36,19 @@ class AnimeModel extends BaseModel {
      */
     function getAnimeByName($name) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name";
-        $result = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
+        $result = $this->paginate($sql, [":name" => "%" . $name . "%"]);
         return $result;
     }
 
     function getAnimeByStudio($studio_id) {
         $sql = "SELECT * FROM $this->table_name WHERE anime_id IN (SELECT anime_id FROM production WHERE studio_id = ?)";
-        $result = $this->run($sql, [$studio_id])->fetchAll();
+        $result = $this->paginate($sql, [$studio_id]);
         return $result;
     }
 
     function getAnimeByStudioName($studio_name) {
         $sql = "SELECT * FROM $this->table_name WHERE anime_id IN (SELECT anime_id FROM production WHERE studio_id IN (SELECT studio_id FROM studio WHERE name LIKE :name))";
-        $result = $this->run($sql, [":name" => "%" . $studio_name . "%"])->fetchAll();
+        $result = $this->paginate($sql, [":name" => "%" . $studio_name . "%"]);
         return $result;
     }
 
@@ -59,7 +59,7 @@ class AnimeModel extends BaseModel {
      */
     function getByNameDescriptionYear($name, $description, $year) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND description LIKE :description AND year = :year";
-        $result = $this->run($sql, [":name" => "%" . $name . "%", ":description" => "%" . $description . "%", ":year" => $year])->fetchAll();
+        $result = $this->paginate($sql, [":name" => "%" . $name . "%", ":description" => "%" . $description . "%", ":year" => $year]);
         return $result;
     }
 
@@ -68,7 +68,7 @@ class AnimeModel extends BaseModel {
      */
     function getByDescription($description) {
         $sql = "SELECT * FROM $this->table_name WHERE description LIKE :description";
-        $result = $this->run($sql, [":description" => "%" . $description . "%"])->fetchAll();
+        $result = $this->paginate($sql, [":description" => "%" . $description . "%"]);
         return $result;
     }
 
@@ -77,25 +77,25 @@ class AnimeModel extends BaseModel {
      */
     function getByYear($year) {
         $sql = "SELECT * FROM $this->table_name WHERE year = :year";
-        $result = $this->run($sql, [":year" => $year])->fetchAll();
+        $result = $this->paginate($sql, [":year" => $year]);
         return $result;
     }
 
     function getByNameDescription($name, $description) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND description LIKE :description";
-        $result = $this->run($sql, [":name" => "%" . $name . "%", ":description" => "%" . $description . "%"])->fetchAll();
+        $result = $this->paginate($sql, [":name" => "%" . $name . "%", ":description" => "%" . $description . "%"]);
         return $result;
     } 
 
     function getByNameYear($name, $year) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND year = :year";
-        $result = $this->run($sql, [":name" => "%" . $name . "%", ":year" => $year])->fetchAll();
+        $result = $this->paginate($sql, [":name" => "%" . $name . "%", ":year" => $year]);
         return $result;
     }
 
     function getByDescriptionYear($description, $year) {
         $sql = "SELECT * FROM $this->table_name WHERE description LIKE :description AND year = :year";
-        $result = $this->run($sql, [":description" => "%" . $description . "%", ":year" => $year])->fetchAll();
+        $result = $this->paginate($sql, [":description" => "%" . $description . "%", ":year" => $year]);
         return $result;
     }
 
@@ -144,7 +144,7 @@ class AnimeModel extends BaseModel {
 
     function getGenres($anime_id) {
         $sql = "SELECT genre_list.genre_id from anime JOIN genre_list on anime.anime_id = genre_list.anime_id WHERE genre_list.anime_id = :anime_id";
-        $result = $this->run($sql, [$anime_id])->fetchAll();
+        $result = $this->paginate($sql, [$anime_id]);
         return $result;
     }
 

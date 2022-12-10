@@ -16,6 +16,14 @@ function getAllStudios(Request $request, Response $response, array $args) {
     $response_data = array();
     $studio_model = new StudioModel();
 
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $studio_model->setPaginationOptions($input_page_number, $input_per_page);
+
     $filter_params = $request->getQueryParams();
     if (isset($filter_params['studio_id'])) {
         $studios = $studio_model->getStudioById($filter_params["studio_id"]);

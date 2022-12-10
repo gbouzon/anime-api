@@ -15,19 +15,19 @@ class StudioModel extends BaseModel {
 
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql)->fetchAll();
+        $result = $this->paginate($sql);
         return $result;
     }
 
     function getStudioById($studio_id) {
         $sql = "SELECT * FROM $this->table_name WHERE studio_id = ?";
-        $result = $this->run($sql, [$studio_id])->fetch();
+        $result = $this->paginate($sql, [$studio_id]);
         return $result;
     }
 
     function getStudioByName($name) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name";
-        $result = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
+        $result = $this->paginate($sql, [":name" => "%" . $name . "%"]);
         return $result;
     }
 
@@ -38,7 +38,7 @@ class StudioModel extends BaseModel {
         INNER JOIN anime
             ON anime.anime_id =  production.anime_id  
          WHERE anime.name LIKE :animeTitle";
-        $result = $this->run($sql, [":animeTitle" => "%" . $animeTitle . "%"])->fetchAll();
+        $result = $this->paginate($sql, [":animeTitle" => "%" . $animeTitle . "%"]);
         return $result;
     }
 
@@ -49,7 +49,7 @@ class StudioModel extends BaseModel {
         INNER JOIN anime
             ON anime.anime_id =  production.anime_id  
         WHERE anime.anime_id = ?";
-        $result = $this->run($sql, [$anime_id])->fetchAll();
+        $result = $this->paginate($sql, [$anime_id]);
         return $result;
     }
 }

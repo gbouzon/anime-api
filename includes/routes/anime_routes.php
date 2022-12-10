@@ -34,6 +34,16 @@ function getAllAnime(Request $request, Response $response, array $args) {
     $genre_model = new GenreModel();
     $genres = array();
 
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $anime_model->setPaginationOptions($input_page_number, $input_per_page);
+    $genre_model = new GenreModel();
+    $genres = array();
+
     // Retrieve the query string parameter from the request's URI.
     $filter_params = $request->getQueryParams();
     if (isset($filter_params['anime_id'])) { //adding get anime by id through query strings instead uri
@@ -143,7 +153,13 @@ function getAnimeByStudio(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
     $anime_model = new AnimeModel();
-
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $anime_model->setPaginationOptions($input_page_number, $input_per_page);
     $anime = $anime_model->getAnimeByStudio($args["studio_id"]);
     return checkData($anime, $response, $request);
 }
