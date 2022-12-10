@@ -18,28 +18,28 @@ class ReviewModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql)->fetchAll();
+        $result = $this->paginate($sql);
         return $result;
     }
     
    
     function getAnimeReviews($anime_id){
         $sql = "SELECT * FROM $this->table_name WHERE anime_id = ?";
-        $result = $this->run($sql, [$anime_id])->fetchAll();
+        $result = $this->paginate($sql, [$anime_id]);
         return $result;
     }
 
     
     function getUserReviews($user_id){
         $sql = "SELECT * FROM $this->table_name WHERE user_id = ?";
-        $result = $this->run($sql, [$user_id])->fetchAll();
+        $result = $this->paginate($sql, [$user_id]);
         return $result;
     }
 
    
     function getReviewById($review_id){
         $sql = "SELECT * FROM $this->table_name WHERE review_id = ?";
-        $result = $this->run($sql, [$review_id])->fetch();
+        $result = $this->paginate($sql, [$review_id]);
         return $result;
     }
 
@@ -48,7 +48,7 @@ class ReviewModel extends BaseModel {
      */
     function getMangaReviews($manga_id){
         $sql = "SELECT * FROM $this->table_name WHERE manga_id = ?";
-        $result = $this->run($sql, [$manga_id])->fetchAll();
+        $result = $this->paginate($sql, [$manga_id]);
         return $result;
     }
 
@@ -56,10 +56,10 @@ class ReviewModel extends BaseModel {
     function getReviewsByRate($rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE star_rating = :star_rating";
-        $result = $this->run($sql, 
+        $result = $this->paginate($sql, 
         [ 
             "star_rating" => $rate
-        ])->fetchAll();
+        ]);
         return $result;
     }
 
@@ -67,11 +67,11 @@ class ReviewModel extends BaseModel {
     function getMangaReviewsByRate($manga_id, $rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE manga_id = :manga_id AND star_rating = :star_rating";
-        $result = $this->run($sql, 
+        $result = $this->paginate($sql, 
         [ 
             "manga_id" => $manga_id,
             "star_rating" => $rate
-        ])->fetchAll();
+        ]);
         return $result;
     }
 
@@ -79,32 +79,32 @@ class ReviewModel extends BaseModel {
     function getAnimeReviewsByRate($anime_id, $rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE anime_id= :anime_id AND star_rating = :star_rating";
-        $result = $this->run($sql, 
+        $result = $this->paginate($sql, 
         [ 
             "anime_id" => $anime_id,
             "star_rating" => $rate
-        ])->fetchAll();
+        ]);
         return $result;
     }
 
     function getReviewsBeforeDate($date){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE date <= ?";
-        $result = $this->run($sql, [$date])->fetchAll();
+        $result = $this->paginate($sql, [$date]);
         return $result;
     }
 
     function getReviewsAfterDate($date){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE date >= ?";
-        $result = $this->run($sql, [$date])->fetchAll();
+        $result = $this->paginate($sql, [$date]);
         return $result;
     }
 
     function getReviewsOnDate($date){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE date Like ?";
-        $result = $this->run($sql, [$date . "%"])->fetchAll();
+        $result = $this->paginate($sql, [$date . "%"]);
         return $result;
     }
 

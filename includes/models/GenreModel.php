@@ -79,4 +79,35 @@ class GenreModel extends BaseModel {
         $data = $this->run($sql, [$genre_id])->fetchAll();
         return $data;
     }
+
+    /**
+     * 
+     */
+    function insertGenre($name, $description) {
+        $sql = "INSERT INTO $this->table_name (name, description) VALUES (?, ?)";
+        $result = $this->run($sql, [$name, $description]);
+        return $result;
+    }
+
+    /**
+     * 
+     */
+    function lastIdInsert() {
+        return $this->lastInsertId();
+    }
+
+    /**
+     * 
+     */
+    function insertGenreList($genre_id, $anime_id) {
+        $sql = "INSERT INTO genre_list (genre_id, anime_id) VALUES (?, ?)";
+        $result = $this->run($sql, [$genre_id, $anime_id]);
+        return $result;
+    }
+
+    function getGenreNameById($genre_id) {
+        $sql = "SELECT name FROM $this->table_name WHERE genre_id = :genre_id";
+        $result = $this->run($sql, [$genre_id])->fetch();
+        return $result;
+    }
 }

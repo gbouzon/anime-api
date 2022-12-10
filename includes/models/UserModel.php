@@ -18,7 +18,7 @@ class UserModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql)->fetchAll();
+        $result = $this->paginate($sql);
         return $result;
     }
 
@@ -27,25 +27,25 @@ class UserModel extends BaseModel {
      */
     function getUserById($user_id) {
         $sql = "SELECT * FROM $this->table_name WHERE user_id = ?";
-        $result = $this->run($sql, [$user_id])->fetch();
+        $result = $this->paginate($sql, [$user_id]);
         return $result;
     }
 
     function getUserByUsername($username) {
         $sql = "SELECT * FROM $this->table_name WHERE username = ?";
-        $result = $this->run($sql, [$username])->fetch();
+        $result = $this->paginate($sql, [$username]);
         return $result;
     }
 
     function getUserByEmail($email) {
         $sql = "SELECT * FROM $this->table_name WHERE email = ?";
-        $result = $this->run($sql, [$email])->fetch();
+        $result = $this->paginate($sql, [$email]);
         return $result;
     }
 
     function getUserByReviewID($review_id) {
         $sql = "SELECT * FROM $this->table_name WHERE user_id = (SELECT user_id FROM review WHERE review_id = ?)";
-        $result = $this->run($sql, [$review_id])->fetch();
+        $result = $this->paginate($sql, [$review_id]);
         return $result;
     }
 
@@ -56,7 +56,7 @@ class UserModel extends BaseModel {
         $sql = "SELECT manga.* FROM list 
                 JOIN manga ON list.manga_id = manga.manga_id 
                 WHERE list.user_id = ? && list.Type = 'watched'";
-        $result = $this->run($sql, [$user_id])->fetchAll();
+        $result = $this->paginate($sql, [$user_id]);
         return $result;
     }
 
@@ -68,7 +68,7 @@ class UserModel extends BaseModel {
         $sql = "SELECT manga.* FROM list 
         JOIN manga ON list.manga_id = manga.manga_id 
         WHERE list.user_id = ? && list.Type = 'to-watch'";
-        $result = $this->run($sql, [$user_id])->fetchAll();
+        $result = $this->paginate($sql, [$user_id]);
         return $result;
     }
 
@@ -80,7 +80,7 @@ class UserModel extends BaseModel {
         $sql = "SELECT anime.* FROM list 
                 JOIN anime ON list.anime_id = anime.anime_id 
                 WHERE list.user_id = ? && list.Type = 'watched'";
-        $result = $this->run($sql, [$user_id])->fetchAll();
+        $result = $this->paginate($sql, [$user_id]);
         return $result;
     }
     
@@ -91,7 +91,7 @@ class UserModel extends BaseModel {
         $sql = "SELECT anime.* FROM list 
         JOIN anime ON list.anime_id = anime.anime_id 
         WHERE list.user_id = ? && list.Type = 'to-watch'";
-        $result = $this->run($sql, [$user_id])->fetchAll();
+        $result = $this->paginate($sql, [$user_id]);
         return $result;
     }
 

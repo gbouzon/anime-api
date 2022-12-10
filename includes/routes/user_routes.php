@@ -16,6 +16,14 @@ function getAllUsers(Request $request, Response $response, array $args) {
     $response_data = array();
     $user_model = new UserModel();
 
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $user_model->setPaginationOptions($input_page_number, $input_per_page);
+
     $filter_params = $request->getQueryParams();
     if (isset($filter_params['user_id'])) {
         $users = $user_model->getUserById($filter_params["user_id"]);
@@ -37,6 +45,14 @@ function getUserMangaWatched(Request $request, Response $response, array $args) 
     $response_data = array();
     $user_model = new UserModel();
 
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $user_model->setPaginationOptions($input_page_number, $input_per_page);
+
     // Retrieve the user if from the request's URI.
     $user_id= $args["user_id"];
     if (isset($user_id)) {
@@ -51,6 +67,14 @@ function getUserMangaToWatch(Request $request, Response $response, array $args) 
     $manga_info = array();
     $response_data = array();
     $user_model = new UserModel();
+
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $user_model->setPaginationOptions($input_page_number, $input_per_page);
 
     // Retrieve the user if from the request's URI.
     $user_id= $args["user_id"];
@@ -67,6 +91,14 @@ function getUserAnimeWatched(Request $request, Response $response, array $args) 
     $response_data = array();
     $user_model = new UserModel();
 
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $user_model->setPaginationOptions($input_page_number, $input_per_page);
+
     // Retrieve the user if from the request's URI.
     $user_id= $args["user_id"];
     if (isset($user_id)) {
@@ -81,6 +113,14 @@ function getUserAnimeToWatch(Request $request, Response $response, array $args) 
     $anime_info = array();
     $response_data = array();
     $user_model = new UserModel();
+
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $user_model->setPaginationOptions($input_page_number, $input_per_page);
 
     // Retrieve the user if from the request's URI.
     $user_id= $args["user_id"];

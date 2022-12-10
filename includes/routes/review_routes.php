@@ -15,6 +15,16 @@ function getAllReviews(Request $request, Response $response, array $args) {
     $reviews = array();
     $response_data = array();
     $review_model = new ReviewModel();
+
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $review_model->setPaginationOptions($input_page_number, $input_per_page);
+
+
     $filter_params = $request->getQueryParams();
     if(isset($filter_params['star_rating']))
         $reviews = $review_model->getReviewsByRate($filter_params['star_rating']);
@@ -47,6 +57,14 @@ function getUserReviews(Request $request, Response $response, array $args) {
     $response_data = array();
     $review_model = new ReviewModel();
 
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $review_model->setPaginationOptions($input_page_number, $input_per_page);
+
     // Retrieve the review if from the request's URI.
     $review_id= $args["user_id"];
     if (isset($review_id)) {
@@ -62,6 +80,14 @@ function getAnimeReviews(Request $request, Response $response, array $args) {
     $response_data = array();
     $response_code = HTTP_OK;
     $review_model = new ReviewModel();
+
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $review_model->setPaginationOptions($input_page_number, $input_per_page);
 
     $filter_params = $request->getQueryParams();
     // Retrieve the review if from the request's URI.
@@ -81,6 +107,14 @@ function getMangaReviews(Request $request, Response $response, array $args) {
     $reviews_info = array();
     $response_data = array();
     $review_model = new ReviewModel();
+
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+    if ($input_page_number == null) 
+        $input_page_number = 1;
+    if ($input_per_page == null)
+        $input_per_page = 10;
+    $review_model->setPaginationOptions($input_page_number, $input_per_page);
 
     $filter_params = $request->getQueryParams();
     // Retrieve the review if from the request's URI.
