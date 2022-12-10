@@ -18,8 +18,7 @@ class MangaModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql)->fetchAll();
-        return $result;
+        return $this->paginate($sql);
     }
 
     /**
