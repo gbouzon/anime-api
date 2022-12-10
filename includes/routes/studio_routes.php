@@ -10,7 +10,9 @@ require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/StudioModel.php';
 
-
+/**
+ * Gets all studios (GET /studios)
+ */
 function getAllStudios(Request $request, Response $response, array $args) {
     $studios = array();
     $response_data = array();

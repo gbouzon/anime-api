@@ -10,9 +10,10 @@ require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/GenreModel.php';
 
-//routes: getAllGenres, getGenreById, getGenreAnime, getGenreManga
-
-// filtering by name and keyword in description
+/**
+ * Gets all genres (GET /genres)
+ * Allows filtering by name and description
+ */
 function getAllGenres(Request $request, Response $response, array $args) {
     $genre = array();
     $response_data = array();
@@ -54,6 +55,9 @@ function getGenreById(Request $request, Response $response, array $args) {
     return httpMethodNotAllowed();  
 }
 
+/**
+ * Gets all anime from a genre (GET /genres/{genre_id}/anime)
+ */
 function getGenreAnime(Request $request, Response $response, array $args) {
     $genre_info = array();
     $response_data = array();
@@ -69,6 +73,9 @@ function getGenreAnime(Request $request, Response $response, array $args) {
     return httpMethodNotAllowed();  
 }
 
+/**
+ * Gets all manga from a genre (GET /genres/{genre_id}/manga)
+ */
 function getGenreManga(Request $request, Response $response, array $args) {
     $genre_info = array();
     $response_data = array();

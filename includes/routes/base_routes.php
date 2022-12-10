@@ -11,13 +11,13 @@ use Symfony\Component\Yaml\Yaml;
  */
 function getResources(Request $request, Response $response, $args) {
     $exposed_resources = array();
-    $exposed_resources['GET | All Anime'] = '/anime'; //ok
-    $exposed_resources['GET | All Studios'] = '/studios'; //ok
-    $exposed_resources['GET | All Manga'] = '/manga'; //ok
-    $exposed_resources['GET | All Users'] = '/users'; //ok
-    $exposed_resources['GET | All Reviews'] = '/reviews'; //ok
-    $exposed_resources['GET | All Genres'] = '/genres'; //ok
-    $exposed_resources['GET | Genre By Id'] = '/genres/{genre_id}';//ok
+    $exposed_resources['GET | All Anime'] = '/anime';
+    $exposed_resources['GET | All Studios'] = '/studios';
+    $exposed_resources['GET | All Manga'] = '/manga'; 
+    $exposed_resources['GET | All Users'] = '/users'; 
+    $exposed_resources['GET | All Reviews'] = '/reviews'; 
+    $exposed_resources['GET | All Genres'] = '/genres'; 
+    $exposed_resources['GET | Genre By Id'] = '/genres/{genre_id}';
     $exposed_resources['GET | Reviews By Anime'] = '/anime/{anime_id}/reviews';
     $exposed_resources['GET | Reviews By Manga'] = '/manga/{manga_id}/reviews';
     $exposed_resources['GET | Reviews By User'] = '/users/{user_id}/reviews';

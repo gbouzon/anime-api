@@ -13,7 +13,7 @@ class JWTManager {
     private $secret_key;
 
     public function __construct() {
-        
+ 
     }
 
     public static function getSecretKey() {

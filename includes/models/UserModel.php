@@ -31,18 +31,27 @@ class UserModel extends BaseModel {
         return $result;
     }
 
+    /**
+     * Get all user records whose username match the specified value.
+     */
     function getUserByUsername($username) {
         $sql = "SELECT * FROM $this->table_name WHERE username = ?";
         $result = $this->paginate($sql, [$username]);
         return $result;
     }
 
+    /**
+     * 
+     */
     function getUserByEmail($email) {
         $sql = "SELECT * FROM $this->table_name WHERE email = ?";
         $result = $this->paginate($sql, [$email]);
         return $result;
     }
 
+    /**
+     * Get the user who made the specified review.
+     */
     function getUserByReviewID($review_id) {
         $sql = "SELECT * FROM $this->table_name WHERE user_id = (SELECT user_id FROM review WHERE review_id = ?)";
         $result = $this->paginate($sql, [$review_id]);

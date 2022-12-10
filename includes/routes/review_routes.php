@@ -10,7 +10,9 @@ require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/ReviewModel.php';
 
-
+/**
+ * Gets all reviews (GET /reviews)
+ */
 function getAllReviews(Request $request, Response $response, array $args) {
     $reviews = array();
     $response_data = array();
@@ -52,6 +54,9 @@ function getAllReviews(Request $request, Response $response, array $args) {
     return checkData($reviews, $response, $request);
 }
 
+/**
+ * Gets all reviews made by the specified user (GET /users/{user_id}/reviews)
+ */
 function getUserReviews(Request $request, Response $response, array $args) {
     $reviews = array();
     $response_data = array();
@@ -75,6 +80,9 @@ function getUserReviews(Request $request, Response $response, array $args) {
     return httpMethodNotAllowed();
 }
 
+/**
+ * Get all reviews made on the specified anime (GET /animes/{anime_id}/reviews)
+ */
 function getAnimeReviews(Request $request, Response $response, array $args) {
     $reviews_info = array();
     $response_data = array();
@@ -103,6 +111,9 @@ function getAnimeReviews(Request $request, Response $response, array $args) {
     return httpMethodNotAllowed(); 
 }
 
+/**
+ * Get all reviews made on the specified manga (GET /mangas/{manga_id}/reviews)
+ */
 function getMangaReviews(Request $request, Response $response, array $args) {
     $reviews_info = array();
     $response_data = array();
@@ -131,11 +142,9 @@ function getMangaReviews(Request $request, Response $response, array $args) {
 }
 
 /**
- * Callback for HTTP POST /reviews
- * add one or more reviews  (resource URI: /reviews)
+ * Insert a new review (POST /reviews)
  */
 function createReviews(Request $request, Response $response, array $args){
-    //TODO: add check for review id (if user uts in an id, check if exists, if not leave autoincrement)
     $data = $request->getParsedBody();
     $review_model = new ReviewModel();
     $manga_model = new MangaModel();
@@ -223,6 +232,9 @@ function createReviews(Request $request, Response $response, array $args){
     return response(httpCreated(), HTTP_CREATED, $response);
 }
 
+/**
+ * Update reviews (PUT /reviews)
+ */
 function updateReviews (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $review_model = new ReviewModel();
@@ -246,6 +258,9 @@ function updateReviews (Request $request, Response $response, $args) {
     }
 }
 
+/**
+ * Delete reviews (DELETE /reviews)
+ */
 function deleteReviews(Request $request, Response $response,  array $args) {
     $review_model = new ReviewModel();
     $parsed_data = $request->getParsedBody();

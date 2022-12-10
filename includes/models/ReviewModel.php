@@ -22,21 +22,27 @@ class ReviewModel extends BaseModel {
         return $result;
     }
     
-   
+   /**
+    * Get all review records for a specified anime
+    */
     function getAnimeReviews($anime_id){
         $sql = "SELECT * FROM $this->table_name WHERE anime_id = ?";
         $result = $this->paginate($sql, [$anime_id]);
         return $result;
     }
 
-    
+    /**
+     * Get all review records for a specified user
+     */
     function getUserReviews($user_id){
         $sql = "SELECT * FROM $this->table_name WHERE user_id = ?";
         $result = $this->paginate($sql, [$user_id]);
         return $result;
     }
 
-   
+   /**
+    * Get a review record by its id
+    */
     function getReviewById($review_id){
         $sql = "SELECT * FROM $this->table_name WHERE review_id = ?";
         $result = $this->paginate($sql, [$review_id]);
@@ -52,7 +58,9 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
-    
+    /**
+     * Get all review records whose star rating matches the specified value
+     */
     function getReviewsByRate($rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE star_rating = :star_rating";
@@ -63,7 +71,9 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
-    
+    /**
+     * Get all review records for a specified manga whose star rating matches the specified value
+     */
     function getMangaReviewsByRate($manga_id, $rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE manga_id = :manga_id AND star_rating = :star_rating";
@@ -75,7 +85,9 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
-    
+    /**
+     * Get all review records for a specified anime whose star rating matches the specified value
+     */
     function getAnimeReviewsByRate($anime_id, $rate){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE anime_id= :anime_id AND star_rating = :star_rating";
@@ -87,6 +99,9 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
+    /**
+     * Get all review records before the specified date
+     */
     function getReviewsBeforeDate($date){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE date <= ?";
@@ -94,6 +109,9 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
+    /**
+     * Get all review records after the specified date
+     */
     function getReviewsAfterDate($date){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE date >= ?";
@@ -101,6 +119,9 @@ class ReviewModel extends BaseModel {
         return $result;
     }
 
+    /**
+     * Get all review records on the specified date
+     */
     function getReviewsOnDate($date){
         $sql = "SELECT * FROM $this->table_name 
                 WHERE date Like ?";

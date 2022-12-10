@@ -81,7 +81,7 @@ class GenreModel extends BaseModel {
     }
 
     /**
-     * 
+     * Adds a new genre record into the database
      */
     function insertGenre($name, $description) {
         $sql = "INSERT INTO $this->table_name (name, description) VALUES (?, ?)";
@@ -90,14 +90,14 @@ class GenreModel extends BaseModel {
     }
 
     /**
-     * 
+     * Retrieves the last genre added into the database
      */
     function lastIdInsert() {
         return $this->lastInsertId();
     }
 
     /**
-     * 
+     * Retrieves the last genre_list added into the database
      */
     function insertGenreList($genre_id, $anime_id) {
         $sql = "INSERT INTO genre_list (genre_id, anime_id) VALUES (?, ?)";
@@ -105,6 +105,9 @@ class GenreModel extends BaseModel {
         return $result;
     }
 
+    /**
+     * Retrieves the genre name by its ID
+     */
     function getGenreNameById($genre_id) {
         $sql = "SELECT name FROM $this->table_name WHERE genre_id = :genre_id";
         $result = $this->run($sql, [$genre_id])->fetch();

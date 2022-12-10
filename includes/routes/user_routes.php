@@ -10,7 +10,9 @@ require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/UserModel.php';
 
-
+/**
+ * Gets all users (GET /users)
+ */
 function getAllUsers(Request $request, Response $response, array $args) {
     $users = array();
     $response_data = array();
@@ -40,6 +42,9 @@ function getAllUsers(Request $request, Response $response, array $args) {
     return checkData($users, $response, $request);
 }
 
+/**
+ * Gets the list of watched manga from the specified user (GET /users/{user_id}/manga/watched)
+ */
 function getUserMangaWatched(Request $request, Response $response, array $args) {
     $manga_info = array();
     $response_data = array();
@@ -63,6 +68,9 @@ function getUserMangaWatched(Request $request, Response $response, array $args) 
     return httpMethodNotAllowed(); 
 }
 
+/**
+ * Gets the list of manga to watch from the specified user (GET /users/{user_id}/manga/to_watch)
+ */
 function getUserMangaToWatch(Request $request, Response $response, array $args) {
     $manga_info = array();
     $response_data = array();
@@ -86,6 +94,9 @@ function getUserMangaToWatch(Request $request, Response $response, array $args) 
     return httpMethodNotAllowed(); 
 }
 
+/**
+ * Gets the list of watched anime from the specified user (GET /users/{user_id}/anime/watched)
+ */
 function getUserAnimeWatched(Request $request, Response $response, array $args) {
     $anime_info = array();
     $response_data = array();
@@ -109,6 +120,9 @@ function getUserAnimeWatched(Request $request, Response $response, array $args) 
     return httpMethodNotAllowed(); 
 }
 
+/**
+ * Gets the list of anime to watch from the specified user (GET /users/{user_id}/anime/to_watch)
+ */
 function getUserAnimeToWatch(Request $request, Response $response, array $args) {
     $anime_info = array();
     $response_data = array();
@@ -180,6 +194,9 @@ function createUsers(Request $request, Response $response, array $args){
     return response(httpCreated(), HTTP_CREATED, $response);
 }
 
+/**
+ * Updates the specified user (PUT /users)
+ */
 function updateUser (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $user_model = new UserModel();
@@ -203,6 +220,9 @@ function updateUser (Request $request, Response $response, $args) {
     }
 }
 
+/**
+ * Deletes the specified user (DELETE /users/{user_id})
+ */
 function deleteUsers(Request $request, Response $response,  array $args) {
     $user_model = new UserModel();
     $parsed_data = $request->getParsedBody();

@@ -25,7 +25,10 @@ $clientSearch = new GuzzleHttp\Client(['base_uri' => $api_anime_search]);
 $clientDetails = new GuzzleHttp\Client(['base_uri' => $api_anime_details]);
 
 
-//filtering allowed by: name, description, year, studio name, studio id
+/**
+ * Get all anime (GET /anime)
+ * Filters by page, per_page, anime_id, studio_name, studio_id, name, description, year
+ */
 function getAllAnime(Request $request, Response $response, array $args) {
     global $clientSearch, $clientDetails, $api_anime_search, $api_anime_details;
     $anime = array();
@@ -34,6 +37,7 @@ function getAllAnime(Request $request, Response $response, array $args) {
     $genre_model = new GenreModel();
     $genres = array();
 
+    //pagination
     $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
     $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
     if ($input_page_number == null) 
@@ -68,14 +72,8 @@ function getAllAnime(Request $request, Response $response, array $args) {
     else if (isset($filter_params['description']) && isset($filter_params['year'])) {
         $anime = $anime_model->getByDescriptionYear($filter_params['description'], $filter_params['year']);
     }
-    //user types in a name, example: your lie in april
-    //check the database first and see if there's a record with that name
-    //if not, query the api for that name
-    //returns name as Shigatsu whatevers
-    //if the name is not the same as user input, check db again for that name
-    //if it is in the db, add input as other_name and return the record
-    //if not, check if the name is the same as user typed in, query the animedetails api for the id of that anime
-    //add it to db and return the record
+    //for composite resources
+    //retrieves anime record from an api based on the name provided
     else if (isset($filter_params["name"])) {
         $anime = $anime_model->getAnimeByName($filter_params["name"]);
         //if there's no anime by that name, query api and add to database
@@ -130,15 +128,27 @@ function getAllAnime(Request $request, Response $response, array $args) {
         // No filtering by genre name or description detected.
         $anime = $anime_model->getAll();
     }
+
+    $array_size = count($anime['data']);
     //adding all genres to each anime
-    // foreach ($anime as $key => $value) {
-    //     $genres = $anime_model->getGenres($value);
-    //     $anime['genres'] = genreNameList($genres);
-    // }
+    if ($array_size > 1) {
+        //var_dump("more than one anime found");
+        foreach ($anime['data'] as &$item) {
+            $genres = $anime_model->getGenres($item['anime_id']);
+            $item += ["genres" => genreNameList($genres)];
+        }
+    }
+    else {
+        $genres = $anime_model->getGenres($anime['data'][0]['anime_id']);
+        $anime['data'][0] += ['genres' => genreNameList($genres)];
+    }
 
     return checkData($anime, $response, $request);
 }
 
+/**
+ * Returns a list of genre names based on the genre ids
+ */
 function genreNameList($genres) {
     $genre_names = array();
     foreach ($genres as $key => $value) {
@@ -149,6 +159,9 @@ function genreNameList($genres) {
     return $genre_names;
 }
 
+/**
+ * Returns a list of anime based on the studio id
+ */
 function getAnimeByStudio(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
@@ -164,18 +177,27 @@ function getAnimeByStudio(Request $request, Response $response, array $args) {
     return checkData($anime, $response, $request);
 }
 
+/**
+ * Searches for an anime by name 
+ */
 function searchForAnime(Client $client, $anime_name) {
     $response = $client->request('GET', $anime_name);
     $data = json_decode($response->getBody()->getContents());
     return $data;
 }
 
+/**
+ * Gets the anime details based on the anime id
+ */
 function getAnimeDetails(Client $client, $anime_id) {
     $response = $client->request('GET', $anime_id);
     $data = json_decode($response->getBody()->getContents());
     return $data;
 }
 
+/**
+ * Inserts a new anime record into the database (POST /anime)
+ */
 function createAnime(Request $request, Response $response, array $args) {
     $data = $request->getParsedBody();
     $anime_model = new AnimeModel();
@@ -217,6 +239,9 @@ function createAnime(Request $request, Response $response, array $args) {
     return $response->withStatus(HTTP_CREATED);
 }
 
+/**
+ * Updates an anime record in the database (PUT /anime)
+ */
 function updateAnime (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $anime_model = new AnimeModel();

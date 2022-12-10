@@ -13,24 +13,36 @@ class StudioModel extends BaseModel {
         parent::__construct();
     }
 
+    /**
+     * Retrieve all studio records
+     */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
         $result = $this->paginate($sql);
         return $result;
     }
 
+    /**
+     * Get a single studio record by its ID.
+     */
     function getStudioById($studio_id) {
         $sql = "SELECT * FROM $this->table_name WHERE studio_id = ?";
         $result = $this->paginate($sql, [$studio_id]);
         return $result;
     }
 
+    /**
+     * Get all studio records whose name match the specified value.
+     */
     function getStudioByName($name) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name";
         $result = $this->paginate($sql, [":name" => "%" . $name . "%"]);
         return $result;
     }
 
+    /**
+     * Get all studio records whose anime title match the specified value
+     */
     function getStudiobyAnimeTitle($animeTitle) {
         $sql = "SELECT studio.*, anime.name FROM $this->table_name
         INNER JOIN production 
@@ -42,6 +54,9 @@ class StudioModel extends BaseModel {
         return $result;
     }
 
+    /**
+     * Get all studio records whose anime id match the specified value
+     */
     function getStudiobyAnimeId($anime_id) {
         $sql = "SELECT studio.*, anime.name FROM $this->table_name
         INNER JOIN production 

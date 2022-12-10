@@ -70,11 +70,17 @@ function checkData($data, Response $response, Request $request) {
     }
 }
 
+/**
+ * Function to handle responses with status code and data.
+ */
 function response($response_data, $response_code, Response $response) {
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
 
+/**
+ * Validates date format.
+ */
 function validateDate($date, $format = 'Y-m-d'){
     $d = DateTime::createFromFormat($format, $date);
     return $d && $d->format($format) === $date;

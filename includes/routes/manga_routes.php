@@ -10,7 +10,10 @@ require_once __DIR__ . './../helpers/response_codes.php';
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/MangaModel.php';
 
-
+/**
+ * Gets all manga (GET /manga)
+ * Allows filtering by manga_id, name, mangaka
+ */
 function getAllManga(Request $request, Response $response, array $args) {
     $manga = array();
     $response_data = array();
@@ -43,6 +46,9 @@ function getAllManga(Request $request, Response $response, array $args) {
     return checkData($manga, $response, $request);
 }
 
+/**
+ * Inserts new manga record into the database (POST /manga)
+ */
 function createManga(Request $request, Response $response, array $args) {
     $data = $request->getParsedBody();
     $manga_model = new MangaModel();
@@ -83,6 +89,9 @@ function createManga(Request $request, Response $response, array $args) {
     return $response->withStatus(201);
 }
 
+/**
+ * Updates a manga record from the database (PUT /manga)
+ */
 function updateManga (Request $request, Response $response, $args) {
     $data = $request->getParsedBody();
     $manga_model = new MangaModel();
