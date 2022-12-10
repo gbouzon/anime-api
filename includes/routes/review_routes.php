@@ -111,6 +111,17 @@ function createReviews(Request $request, Response $response, array $args){
     for ($index = 0; $index < count($data); $index++){
         $new_reviews_record = array();
         $single_review = $data[$index];
+
+        if(isset($single_review["review_id"])){
+            $new_reviews_record["review_id"] = $single_review["review_id"];
+            if($review_model->getReviewById($single_review["review_id"])){
+                $response_data = makeCustomJSONError(HTTP_METHOD_NOT_ALLOWED, "The assigned review_id already exist");
+                return response($response_data, HTTP_METHOD_NOT_ALLOWED, $response); 
+            }
+        }else{
+            $new_reviews_record["review_id"]= NULL;
+        }
+
         // To-Do: data can not be null
         foreach($single_review as $property => $value){
             if($property == "user_id" || $property == "title" || $property == "star_rating"){

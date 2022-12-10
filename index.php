@@ -14,6 +14,7 @@ require __DIR__ . '/vendor/autoload.php';
 //constants
 require_once './includes/app_constants.php';
 require_once './includes/helpers/helper_functions.php';
+require_once './includes/helpers/JWTManager.php';
 
 //routes
 require_once './includes/routes/base_routes.php';
@@ -23,13 +24,44 @@ require_once './includes/routes/review_routes.php';
 require_once './includes/routes/studio_routes.php';
 require_once './includes/routes/user_routes.php';
 require_once './includes/routes/genre_routes.php';
+require_once './includes/routes/token_routes.php';
+
+define('APP_BASE_DIR', __DIR__);
+// IMPORTANT: This file must be added to your .ignore file. 
+define('APP_ENV_CONFIG', 'config.env');
+
 
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
 $app->addBodyParsingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
-$app->setBasePath("/webservices/anime-api");
+$api_base_path = "/webservices/anime-api";
+$app->setBasePath($api_base_path);
 
+$jwt_secret = JWTManager::getSecretKey();
+$app->add(new Tuupola\Middleware\JwtAuthentication([
+            'secret' => $jwt_secret,
+            'algorithm' => 'HS256',
+            'secure' => false,            
+            "path" => $api_base_path, 
+            "attribute" => "decoded_token_data",
+            "ignore" => ["$api_base_path/token", "$api_base_path/account"],
+            "error" => function ($response, $arguments) {
+                $data["status"] = "error";
+                $data["message"] = $arguments["message"];
+                $response->getBody()->write(
+                        json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+                );
+                return $response->withHeader("Content-Type", "application/json;charset=utf-8");
+            }
+        ]));
+
+        
+// Routes for user account, loggin in and token generation.
+$app->post("/token", "handleGetToken");
+$app->post("/account", "handleCreateUserAccount");        
+
+        
 //Root
 $app->get('/', "getResources"); 
 
