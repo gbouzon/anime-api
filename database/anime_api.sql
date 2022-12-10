@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2022 at 01:46 AM
+-- Generation Time: Dec 10, 2022 at 03:12 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -72,6 +72,27 @@ INSERT INTO `anime` (`anime_id`, `production_id`, `name`, `description`, `year`,
 (30, 4, 'How Not to Summon a Demon Lord', 'When it comes to the fantasy MMORPG Cross Reverie, none can match the power of the Demon King Diablo. Possessing the game\'s rarest artifacts and an unrivaled player level, he overpowers all foolish enough to confront him. But despite his fearsome reputation, Diablo\'s true identity is Takuma Sakamoto, a shut-in gamer devoid of any social skills. Defeating hopeless challengers day by day, Takuma cares about nothing else but his virtual life—that is, until a summoning spell suddenly transports him ', 2018, 12, 'blank.png'),
 (31, 3, 'the Rising of the Shield Hero ', 'The Four Cardinal Heroes are a group of ordinary men from modern-day Japan summoned to the kingdom of Melromarc to become its saviors. Melromarc is a country plagued by the Waves of Catastrophe that have repeatedly ravaged the land and brought disaster to its citizens for centuries. The four heroes are respectively bestowed a sword, spear, bow, and shield to vanquish these Waves. Naofumi Iwatani, an otaku, becomes cursed with the fate of being the \"Shield Hero.\" Armed with only a measly shield, ', 2019, 50, 'blank.png'),
 (34, 5, 'Trinity Seven', 'One day, the bright red sun stopped shining, causing the \"Breakdown Phenomenon\"—the destruction of Arata Kasuga\'s town and the disappearance of the people inhabiting it. All, however, is not yet lost; by utilizing the magical grimoire given to him by his childhood friend and cousin Hijiri Kasuga, Arata\'s world gets artificially reconstructed.\r\n\r\nIn order to investigate the phenomenon, Lilith Asami appears before Arata, whose artificial world suddenly disintegrates. He is given two choices: hand ', 2014, 12, 'blank.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `api_user`
+--
+
+CREATE TABLE `api_user` (
+  `user_id` int(9) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `api_user`
+--
+
+INSERT INTO `api_user` (`user_id`, `first_name`, `last_name`, `email`, `password`) VALUES
+(1, 'danich', 'hang', 'danichhang@gmail.com', '$2y$15$6B5n5gPqSNHPRbwwSNX4eun4iDtddhvwbUIERRUf.oadcgrm60ydu');
 
 -- --------------------------------------------------------
 
@@ -465,7 +486,9 @@ INSERT INTO `review` (`review_id`, `anime_id`, `manga_id`, `user_id`, `title`, `
 (4, 8, NULL, 2, 'This is a good anime, besides me feeling like the writers or makers are sexist', '0', 'It has cons like plot holes, lack of side character action its like the side characters are forgatten and they show naruto\'s flashback so many times. The female characters are just bad. And another bad thing that it is repetitive I have to be honest Naruto: Shippuden has its repeated parts and its just getting predictable', '2022-11-24 00:37:52'),
 (5, NULL, 52, 1, 'Solo Leveling', '3', 'Solo Leveling is good, but it doesn\'t feel like anything new. Cliches are not always a bad thing, a manga/anime can be very cliche and still be amazing.', '2022-11-24 00:37:52'),
 (6, 16, NULL, 3, 'Fire Force !!!!', '5', 'Loved it! It is definitely in my top ten favorite anime. It is one of the funniest animes I\'ve watched. The setting is never lacking and always feels new. Every fire station is like a whole new world. Just don\'t give up on it on the first episode because it gets way better the farther into the storyline we go, with amazing plot twists and engaging characters. The show did a good job of making serious topics hilarious. This anime is definitely worth a watch.', '2022-11-24 00:37:52'),
-(7, 12, NULL, 2, 'In Love', '5', 'IT IS SO FAR THE BEST ANIME I EVER SEE', '2022-11-24 00:37:52');
+(7, 12, NULL, 2, 'In Love', '5', 'IT IS SO FAR THE BEST ANIME I EVER SEE', '2022-11-24 00:37:52'),
+(99, 10, NULL, 1, 'Jujutsu Kaisen doesn’t feel like a massively grand vision yet', '3', 'In its characters, its story structure, its tone, and its ease to hop into exciting powerup action the animation team flexed over, it gets what audiences want from Shonen material as a strong start to a story while removing or playing down stuff that’s been less palatable overtime', '2022-12-10 02:10:53'),
+(100, 10, NULL, 1, 'Jujutsu Kaisen doesn’t feel like a massively grand vision yet', '3', 'In its characters, its story structure, its tone, and its ease to hop into exciting powerup action the animation team flexed over, it gets what audiences want from Shonen material as a strong start to a story while removing or playing down stuff that’s been less palatable overtime', '2022-12-10 02:11:06');
 
 -- --------------------------------------------------------
 
@@ -547,6 +570,12 @@ ALTER TABLE `anime`
   ADD KEY `ANIME_PRODUCTION_FK` (`production_id`);
 
 --
+-- Indexes for table `api_user`
+--
+ALTER TABLE `api_user`
+  ADD PRIMARY KEY (`user_id`);
+
+--
 -- Indexes for table `genre`
 --
 ALTER TABLE `genre`
@@ -620,6 +649,12 @@ ALTER TABLE `anime`
   MODIFY `anime_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
+-- AUTO_INCREMENT for table `api_user`
+--
+ALTER TABLE `api_user`
+  MODIFY `user_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `genre`
 --
 ALTER TABLE `genre`
@@ -653,7 +688,7 @@ ALTER TABLE `production`
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `review_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `review_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `studio`
