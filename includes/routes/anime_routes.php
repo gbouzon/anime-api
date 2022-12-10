@@ -31,11 +31,13 @@ function getAllAnime(Request $request, Response $response, array $args) {
     $anime = array();
     $response_data = array();
     $anime_model = new AnimeModel();
+    $genre_model = new GenreModel();
+    $genres = array();
 
     // Retrieve the query string parameter from the request's URI.
     $filter_params = $request->getQueryParams();
     if (isset($filter_params['anime_id'])) { //adding get anime by id through query strings instead uri
-        $manga = $manga_model->getAnimeById($filter_params["anime_id"]);
+        $anime = $anime_model->getAnimeById($filter_params["anime_id"]);
     }
     else if (isset($filter_params['studio_name'])) {
         $anime = $anime_model->getAnimeByStudioName($filter_params["studio_name"]);
@@ -72,33 +74,38 @@ function getAllAnime(Request $request, Response $response, array $args) {
             if (!empty($anime_search)) {
                 $animeNameId = $anime_search[0]->animeId;
                 $animeTitle = $anime_search[0]->animeTitle;
-                var_dump("nothing in db, got something from api");
-                var_dump($anime_search);
                 if (strtolower($animeTitle) != strtolower($filter_params["name"])) {
                     $new_anime = $anime_model->getAnimeByName($animeTitle);
                     if (!empty($new_anime)) {
                         $anime_model->addOtherTitle($filter_params["name"], $new_anime[0]['anime_id']);
                         $anime = $anime_model->getAnimeById($new_anime[0]['anime_id']);
-                        var_dump("already in db, added other title");
                     }
                 }
                 else {
-                    var_dump("not in db, found in search, getting details");
                     $anime = getAnimeDetails($clientDetails, $animeNameId);
                     if (!is_array($anime)) {
                         $anime = [$anime];
                     }
-                    var_dump($anime);
                     $anime = $anime[0];
                     $animeOtherTitle = $anime->otherNames;
-                    if (!empty($animeOtherTitle)) {
-                        $anime_model->insertAnime($anime->animeTitle, $animeOtherTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
-                        $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
+                    $animeGenres = $anime->genres;
+                    if (empty($animeOtherTitle)) {
+                        $animeOtherTitle = null;
                     }
-                    else {
-                        $anime_model->insertAnime($anime->animeTitle, null, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
-                        $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
-                    } 
+                    $anime_model->insertAnime($anime->animeTitle, $animeOtherTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
+                    $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
+                    $animeId = $anime["anime_id"];
+                    foreach ($animeGenres as $genre) {
+                        $new_genre = $genre_model->getGenreByName(strtolower($genre));
+                        if (empty($new_genre)) {
+                            $genre_model->insertGenre($genre, '');
+                            $genre_id = $genre_model->lastIdInsert();
+                        }
+                        else {
+                            $genre_id = $new_genre[0]['genre_id'];
+                        }
+                        $genre_model->insertGenreList($genre_id, $animeId);
+                    }
                 }
             }
         }
@@ -113,8 +120,23 @@ function getAllAnime(Request $request, Response $response, array $args) {
         // No filtering by genre name or description detected.
         $anime = $anime_model->getAll();
     }
+    //adding all genres to each anime
+    // foreach ($anime as $key => $value) {
+    //     $genres = $anime_model->getGenres($value);
+    //     $anime['genres'] = genreNameList($genres);
+    // }
 
     return checkData($anime, $response, $request);
+}
+
+function genreNameList($genres) {
+    $genre_names = array();
+    foreach ($genres as $key => $value) {
+        $genre_model = new GenreModel();
+        $genre = $genre_model->getGenreNameById($value['genre_id']);
+        array_push($genre_names,$genre['name']);
+    }
+    return $genre_names;
 }
 
 function getAnimeByStudio(Request $request, Response $response, array $args) {

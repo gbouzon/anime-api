@@ -142,4 +142,10 @@ class AnimeModel extends BaseModel {
         return $result;
     }
 
+    function getGenres($anime_id) {
+        $sql = "SELECT genre_list.genre_id from anime JOIN genre_list on anime.anime_id = genre_list.anime_id WHERE genre_list.anime_id = :anime_id";
+        $result = $this->run($sql, [$anime_id])->fetchAll();
+        return $result;
+    }
+
 }
