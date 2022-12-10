@@ -82,6 +82,27 @@ INSERT INTO `anime` (`anime_id`, `production_id`, `name`, `other_name`, `descrip
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `api_user`
+--
+
+CREATE TABLE `api_user` (
+  `user_id` int(9) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `api_user`
+--
+
+INSERT INTO `api_user` (`user_id`, `first_name`, `last_name`, `email`, `password`) VALUES
+(1, 'danich', 'hang', 'danichhang@gmail.com', '$2y$15$6B5n5gPqSNHPRbwwSNX4eun4iDtddhvwbUIERRUf.oadcgrm60ydu');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `genre`
 --
 
@@ -551,6 +572,12 @@ ALTER TABLE `anime`
   ADD KEY `ANIME_PRODUCTION_FK` (`production_id`);
 
 --
+-- Indexes for table `api_user`
+--
+ALTER TABLE `api_user`
+  ADD PRIMARY KEY (`user_id`);
+
+--
 -- Indexes for table `genre`
 --
 ALTER TABLE `genre`
@@ -623,6 +650,12 @@ ALTER TABLE `user`
 ALTER TABLE `anime`
   MODIFY `anime_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
+ --
+-- AUTO_INCREMENT for table `api_user`
+--
+ALTER TABLE `api_user`
+  MODIFY `user_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `genre`
 --
@@ -657,7 +690,7 @@ ALTER TABLE `production`
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `review_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `review_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `studio`
