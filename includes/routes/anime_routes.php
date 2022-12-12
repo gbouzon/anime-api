@@ -72,21 +72,49 @@ function getAllAnime(Request $request, Response $response, array $args) {
     else if (isset($filter_params['description']) && isset($filter_params['year'])) {
         $anime = $anime_model->getByDescriptionYear($filter_params['description'], $filter_params['year']);
     }
+    
     //for composite resources
     //retrieves anime record from an api based on the name provided
     else if (isset($filter_params["name"])) {
+        
         $anime = $anime_model->getAnimeByName($filter_params["name"]);
         //if there's no anime by that name, query api and add to database
-        if (empty($anime)) {
+        if (empty($anime['data'])) {
             $anime_search = searchForAnime($clientSearch, "search?keyw=" . $filter_params["name"]);
             if (!empty($anime_search)) {
                 $animeNameId = $anime_search[0]->animeId;
                 $animeTitle = $anime_search[0]->animeTitle;
                 if (strtolower($animeTitle) != strtolower($filter_params["name"])) {
                     $new_anime = $anime_model->getAnimeByName($animeTitle);
-                    if (!empty($new_anime)) {
-                        $anime_model->addOtherTitle($filter_params["name"], $new_anime[0]['anime_id']);
-                        $anime = $anime_model->getAnimeById($new_anime[0]['anime_id']);
+                    if (!empty($new_anime['data'])) {
+                        $anime_model->addOtherTitle($filter_params["name"], $new_anime['data'][0]['anime_id']);
+                        $anime = $anime_model->getAnimeById($new_anime['data'][0]['anime_id']);
+                    }
+                    else {
+                        $anime = getAnimeDetails($clientDetails, $animeNameId);
+                        if (!is_array($anime)) {
+                            $anime = [$anime];
+                        }
+                        $anime = $anime[0];
+                        $animeOtherTitle = $anime->otherNames;
+                        $animeGenres = $anime->genres;
+                        if (empty($animeOtherTitle)) {
+                            $animeOtherTitle = null;
+                        }
+                        $anime_model->insertAnime($anime->animeTitle, $animeOtherTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
+                        $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
+                        $animeId = $anime['data'][0]["anime_id"];
+                        foreach ($animeGenres as $genre) {
+                            $new_genre = $genre_model->getGenreByName(strtolower($genre));
+                            if (empty($new_genre['data'])) {
+                                $genre_model->insertGenre($genre, '');
+                                $genre_id = $genre_model->lastIdInsert();
+                            }
+                            else {
+                                $genre_id = $new_genre['data'][0]['genre_id'];
+                            }
+                            $genre_model->insertGenreList($genre_id, $animeId);
+                        }
                     }
                 }
                 else {
@@ -102,15 +130,15 @@ function getAllAnime(Request $request, Response $response, array $args) {
                     }
                     $anime_model->insertAnime($anime->animeTitle, $animeOtherTitle, $anime->synopsis, $anime->releasedDate, $anime->totalEpisodes, $anime->animeImg);
                     $anime = $anime_model->getAnimeById($anime_model->lastIdInsert());
-                    $animeId = $anime["anime_id"];
+                    $animeId = $anime['data'][0]["anime_id"];
                     foreach ($animeGenres as $genre) {
                         $new_genre = $genre_model->getGenreByName(strtolower($genre));
-                        if (empty($new_genre)) {
+                        if (empty($new_genre['data'])) {
                             $genre_model->insertGenre($genre, '');
                             $genre_id = $genre_model->lastIdInsert();
                         }
                         else {
-                            $genre_id = $new_genre[0]['genre_id'];
+                            $genre_id = $new_genre['data'][0]['genre_id'];
                         }
                         $genre_model->insertGenreList($genre_id, $animeId);
                     }
@@ -138,7 +166,7 @@ function getAllAnime(Request $request, Response $response, array $args) {
             $item += ["genres" => genreNameList($genres)];
         }
     }
-    else {
+    else if ($array_size == 1) {
         $genres = $anime_model->getGenres($anime['data'][0]['anime_id']);
         $anime['data'][0] += ['genres' => genreNameList($genres)];
     }

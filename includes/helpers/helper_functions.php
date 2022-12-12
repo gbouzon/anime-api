@@ -60,7 +60,7 @@ function array2XML($obj, $array)
  * Function to handle error 404 (Not Found)
  */
 function checkData($data, Response $response, Request $request) {
-    if (!$data) {
+    if (empty($data['data'])) {
         $response_data = httpNotFound();
         $response->getBody()->write($response_data);
         return $response->withStatus(HTTP_NOT_FOUND);

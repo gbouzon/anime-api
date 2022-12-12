@@ -18,7 +18,7 @@ class GenreModel extends BaseModel {
      */
     function getAll() {
         $sql = "SELECT * FROM $this->table_name";
-        $result = $this->run($sql)->fetchAll();
+        $result = $this->paginate($sql);
         return $result;
     }
 
@@ -27,7 +27,7 @@ class GenreModel extends BaseModel {
      */
     function getByNameDescription($name, $description) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name AND description LIKE :description";
-        $result = $this->run($sql, ["name" => "%" . $name . "%", "description" => "%" . $description . "%"])->fetchAll();
+        $result = $this->paginate($sql, ["name" => "%" . $name . "%", "description" => "%" . $description . "%"]);
         return $result;
     }
 
@@ -36,7 +36,7 @@ class GenreModel extends BaseModel {
      */
     function getByDescription($description) {
         $sql = "SELECT * FROM $this->table_name WHERE description LIKE :description";
-        $result = $this->run($sql, ["description" => "%" . $description . "%"])->fetchAll();
+        $result = $this->paginate($sql, ["description" => "%" . $description . "%"]);
         return $result;
     }
 
@@ -45,7 +45,7 @@ class GenreModel extends BaseModel {
      */
     function getGenreById($genre_id) {
         $sql = "SELECT * FROM $this->table_name WHERE genre_id = ?";
-        $result = $this->run($sql, [$genre_id])->fetch();
+        $result = $this->paginate($sql, [$genre_id]);
         return $result;
     }
 
@@ -54,7 +54,7 @@ class GenreModel extends BaseModel {
      */
     function getGenreByName($name) {
         $sql = "SELECT * FROM $this->table_name WHERE name LIKE :name";
-        $result = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
+        $result = $this->paginate($sql, [":name" => "%" . $name . "%"]);
         return $result;
     }
 
@@ -65,7 +65,7 @@ class GenreModel extends BaseModel {
      */
     public function getAllAnimeFromGenre($genre_id) {
         $sql = "SELECT * FROM anime WHERE anime_id IN (SELECT anime_id FROM genre_list WHERE genre_id = ?)";
-        $data = $this->run($sql, [$genre_id])->fetchAll();
+        $data = $this->paginate($sql, [$genre_id]);
         return $data;
     }
 
@@ -76,7 +76,7 @@ class GenreModel extends BaseModel {
      */
     public function getAllMangaFromGenre($genre_id) {
         $sql = "SELECT * FROM manga WHERE manga_id IN (SELECT manga_id FROM genre_list WHERE genre_id = ?)";
-        $data = $this->run($sql, [$genre_id])->fetchAll();
+        $data = $this->paginate($sql, [$genre_id]);
         return $data;
     }
 
